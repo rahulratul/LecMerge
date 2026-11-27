@@ -8,5 +8,5 @@ python-multipart==0.0.34
 # Testing
 pytest==9.2.0
 pytest-cov==7.1.0
-httpx==0.29.0
+httpx2==2.16.2
 selenium==4.54.0
