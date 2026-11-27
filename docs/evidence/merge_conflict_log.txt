@@ -1,0 +1,40 @@
+=== git merge --no-ff feature/conflict-doc-b ===
+Auto-merging docs/DECISIONS.md
+CONFLICT (content): Merge conflict in docs/DECISIONS.md
+Automatic merge failed; fix conflicts and then commit the result.
+
+=== git status ===
+On branch develop
+Your branch is ahead of 'origin/develop' by 2 commits.
+  (use "git push" to publish your local commits)
+
+You have unmerged paths.
+  (fix conflicts and run "git commit")
+  (use "git merge --abort" to abort the merge)
+
+Unmerged paths:
+  (use "git add <file>..." to mark resolution)
+	both modified:   docs/DECISIONS.md
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	docs/evidence/merge_conflict_log.txt
+
+no changes added to commit (use "git add" and/or "git commit -a")
+
+=== git diff ===
+diff --cc docs/DECISIONS.md
+index 28ec0f0,4f86ed1..0000000
+--- a/docs/DECISIONS.md
++++ b/docs/DECISIONS.md
+@@@ -58,5 -58,5 +58,10 @@@ between requirement sources. Authority 
+  
+  - For the overnight MVP, `Base.metadata.create_all()` in `app/database.py` initializes
+    the SQLite schema on startup.
+++<<<<<<< HEAD
+ +- In a production deployment, Alembic migrations with versioned upgrade/downgrade scripts
+ +  should replace create_all() so schema changes apply cleanly without recreating data.
+++=======
++ - Before any production schema evolution, automated SQLite backups and PRAGMA foreign_keys
++   verification should accompany versioned migrations to prevent data loss.
+++>>>>>>> feature/conflict-doc-b
