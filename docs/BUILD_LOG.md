@@ -13,7 +13,7 @@ Remote: https://github.com/rahulratul/LecMerge
 | 3 | Database, repository, application service | `feature/p3-db-and-services` | complete |
 | 4 | GUI: course, lecture, block, fragment workflow | `feature/p4-gui-workflow` | complete |
 | 5 | Analysis, merge workspace, Markdown export | `feature/p5-analysis-and-merge` | complete |
-| 6 | REST API and OpenAPI documentation | `feature/p6-rest-api-openapi` | not started |
+| 6 | REST API and OpenAPI documentation | `feature/p6-rest-api-openapi` | complete |
 | 7 | Test hardening, Selenium, GitHub CI, Git evidence | `feature/p7-tests-selenium-ci` | not started |
 | 8 | Final documentation, release merge, submission readiness | `develop` → `main` | not started |
 
@@ -276,3 +276,39 @@ Swagger/OpenAPI novelty UNCONFIRMED (D-005), stack lock (D-006).
 ### Limitations
 
 - Versioned REST API endpoints (`/api/v1/...`) and OpenAPI schemas are added in Phase 6.
+
+---
+
+## Phase 6 — REST API and OpenAPI documentation
+
+- **Branch:** `feature/p6-rest-api-openapi` → merged `--no-ff` into `develop`.
+- **Commits:** `c723fee docs(api): add versioned REST API endpoints, Pydantic schemas, and OpenAPI snapshot`;
+  merge `0cebcfb merge: feature/p6-rest-api-openapi into develop`.
+- **Push:** `feature/p6-rest-api-openapi` and `develop` pushed to `origin` (`dbfdabd..0cebcfb`).
+
+### Files changed
+
+`app/schemas.py`, `app/routers/api.py`, `app/main.py`, `docs/openapi.json`,
+`tests/integration/test_repository_and_api.py`.
+
+### Implementation summary
+
+- Implemented all 7 minimum versioned endpoints under `/api/v1/` reusing `LecMergeService`:
+  - `GET /api/v1/courses`, `POST /api/v1/courses` (201)
+  - `POST /api/v1/courses/{course_id}/lectures` (201)
+  - `POST /api/v1/blocks/{block_id}/fragments` (201)
+  - `GET /api/v1/lectures/{lecture_id}/analysis` (200)
+  - `POST /api/v1/blocks/{block_id}/merge` (200)
+  - `GET /api/v1/lectures/{lecture_id}/study-sheet` (200 JSON or `?download=true` Markdown attachment)
+- Added Pydantic schemas with blank-string validators, tags, summaries, descriptions, examples,
+  and documented 404/422 error responses.
+- Generated reproducible OpenAPI 3.1.0 snapshot at `docs/openapi.json`.
+
+### Commands run and actual results
+
+- `pytest -q` → `54 passed, 1 warning in 0.55s` (including `/docs` and `/openapi.json` checks).
+- `python -c "import json; from app.main import app; ..."` → wrote `docs/openapi.json`.
+
+### Limitations
+
+- Reminder (D-005): Swagger/OpenAPI novelty as a self-directed tool still requires student confirmation.

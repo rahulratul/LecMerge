@@ -1277,23 +1277,23 @@ Acceptance gate: The end-to-end business workflow works from GUI input through a
 
 Phase 6 — REST API and OpenAPI documentation
 
-[ ] Branch from develop as feature/p6-rest-api-openapi.
+[x] Branch from develop as feature/p6-rest-api-openapi.
 
-[ ] Add Pydantic request and response schemas.
+[x] Add Pydantic request and response schemas.
 
-[ ] Implement the minimum API endpoints from Section 8.1.
+[x] Implement the minimum API endpoints from Section 8.1.
 
-[ ] Reuse the application service; do not duplicate business logic.
+[x] Reuse the application service; do not duplicate business logic.
 
-[ ] Add tags, summaries, descriptions, examples, and relevant error responses.
+[x] Add tags, summaries, descriptions, examples, and relevant error responses.
 
-[ ] Verify /docs loads and endpoints can be executed through Swagger UI.
+[x] Verify /docs loads and endpoints can be executed through Swagger UI.
 
-[ ] Add API integration tests for successful and invalid requests.
+[x] Add API integration tests for successful and invalid requests.
 
-[ ] Save an OpenAPI snapshot only if generation is reliable and repeatable.
+[x] Save an OpenAPI snapshot only if generation is reliable and repeatable.
 
-[ ] Push feature/p6-rest-api-openapi and integrate into develop.
+[x] Push feature/p6-rest-api-openapi and integrate into develop.
 
 Acceptance gate: /docs loads, schemas are readable, and core API operations work against the same persistent data model as the GUI.
 
