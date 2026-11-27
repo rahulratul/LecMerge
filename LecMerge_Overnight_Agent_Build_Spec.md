@@ -1253,25 +1253,25 @@ Acceptance gate: A user can complete the core data-entry flow through the browse
 
 Phase 5 — Analysis, merge workspace, and Markdown export
 
-[ ] Branch from develop as feature/p5-analysis-and-merge.
+[x] Branch from develop as feature/p5-analysis-and-merge.
 
-[ ] Display covered-block counts and coverage percentage.
+[x] Display covered-block counts and coverage percentage.
 
-[ ] Display blind spots for blocks with no content.
+[x] Display blind spots for blocks with no content.
 
-[ ] Display potential formula conflict warnings using accurate wording.
+[x] Display potential formula conflict warnings using accurate wording.
 
-[ ] Add the strategy selector and merge action.
+[x] Add the strategy selector and merge action.
 
-[ ] Save canonical merged content without deleting fragments.
+[x] Save canonical merged content without deleting fragments.
 
-[ ] Implement the study-sheet page and .md download response.
+[x] Implement the study-sheet page and .md download response.
 
-[ ] Ensure unresolved conflict warnings are present in the generated study sheet.
+[x] Ensure unresolved conflict warnings are present in the generated study sheet.
 
-[ ] Add/complete service and GUI tests for analysis, merge, and export.
+[x] Add/complete service and GUI tests for analysis, merge, and export.
 
-[ ] Push feature/p5-analysis-and-merge and integrate into develop.
+[x] Push feature/p5-analysis-and-merge and integrate into develop.
 
 Acceptance gate: The end-to-end business workflow works from GUI input through analysis, merge, and Markdown download; all expected state is persisted.
 
