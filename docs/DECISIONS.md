@@ -53,3 +53,21 @@ between requirement sources. Authority order: official CSE 3206 manual →
 - CI: GitHub Actions only (no Jenkins unless the instructor requires it).
 - Explicitly excluded: Docker, Redis, Celery, React, external AI APIs, frontend
   build tools, authentication, OCR, real-time features, PDF/DOCX export.
+
+## D-007 Schema initialization without migrations (Phase 3)
+
+- For the overnight MVP, `Base.metadata.create_all()` in `app/database.py` initializes
+  the SQLite schema on startup.
+- In a production deployment, Alembic migrations with versioned upgrade/downgrade scripts
+  should replace `create_all()` so schema changes apply cleanly without recreating data.
+- Before any production schema evolution, automated SQLite backups and `PRAGMA foreign_keys`
+  verification should accompany versioned migrations to prevent data loss.
+
+## D-008 Scope cuts and conflict heuristic limitations (Phase 8 summary)
+
+- **Excluded from MVP:** authentication/roles, OCR/image upload, AI/LLM semantic diffing,
+  real-time WebSockets, voting/reputation, PDF/DOCX export, Docker/Redis/Celery, and
+  frontend build pipelines. These are documented as future work rather than partial code.
+- **Conflict heuristic trade-off:** `app/domain/conflict_detector.py` uses a deterministic
+  whitespace-normalized line check on `=` expressions. It intentionally avoids claiming
+  mathematical correctness and always labels findings `Potential formula conflict — review required`.

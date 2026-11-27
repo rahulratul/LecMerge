@@ -1,0 +1,87 @@
+classDiagram
+    direction TB
+
+    %% ---------- Composite (structural) ----------
+    class CoverageNode {
+        <<abstract>>
+        +total_blocks() int
+        +covered_blocks() int
+        +find_gaps() list~AnchorBlockNode~
+        +coverage_percent() float
+    }
+    class AnchorBlockNode {
+        +block_id: int
+        +topic: str
+        +fragment_contents: Sequence~str~
+        +merged_content: Optional~str~
+        +is_covered() bool
+    }
+    class CompositeNode {
+        +children: list~CoverageNode~
+    }
+    class LectureNode {
+        +lecture_id: int
+        +title: str
+    }
+    class CourseNode {
+        +course_id: int
+        +title: str
+    }
+    CoverageNode <|-- AnchorBlockNode
+    CoverageNode <|-- CompositeNode
+    CompositeNode <|-- LectureNode
+    CompositeNode <|-- CourseNode
+    CompositeNode o-- CoverageNode : children
+
+    %% ---------- Strategy (behavioral) ----------
+    class MergeStrategy {
+        <<abstract>>
+        +key: str
+        +label: str
+        +select(fragments) FragmentLike
+    }
+    class MostDetailedStrategy
+    class LatestSubmittedStrategy
+    class FragmentLike {
+        <<protocol>>
+        +id: int
+        +content: str
+        +created_at: datetime
+    }
+    class EmptyFragmentListError
+    MergeStrategy <|-- MostDetailedStrategy
+    MergeStrategy <|-- LatestSubmittedStrategy
+    MergeStrategy ..> FragmentLike : selects
+    MergeStrategy ..> EmptyFragmentListError : raises
+
+    %% ---------- Builder (creational) ----------
+    class StudySheetBuilder {
+        +with_title(title, course_label) StudySheetBuilder
+        +add_coverage_summary(covered, total) StudySheetBuilder
+        +add_block_section(position, topic, merged_content, fragment_count, conflict_lines) StudySheetBuilder
+        +add_warnings(warnings) StudySheetBuilder
+        +build() StudySheet
+        +build_markdown() str
+    }
+    class StudySheet {
+        +title: str
+        +course_label: Optional~str~
+        +coverage_lines: tuple
+        +sections: tuple
+        +warnings: tuple
+        +to_markdown() str
+    }
+    StudySheetBuilder ..> StudySheet : creates
+
+    %% ---------- Conflict heuristic ----------
+    class ConflictReport {
+        +has_potential_conflict: bool
+        +candidate_lines: list~str~
+    }
+    class conflict_detector {
+        <<module>>
+        +extract_formula_candidates(text) list~str~
+        +detect_potential_conflict(contents) ConflictReport
+    }
+    conflict_detector ..> ConflictReport : returns
+    StudySheetBuilder ..> conflict_detector : uses CONFLICT_WARNING

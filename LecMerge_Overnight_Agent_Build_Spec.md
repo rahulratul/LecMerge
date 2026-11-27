@@ -1131,225 +1131,225 @@ Execution rule: Complete and verify each phase before starting the next. After m
 
 Phase 0 — Workspace inspection, GitHub remote setup, and scope lock
 
-[ ] Inspect the current working directory, Git status, existing source files, Python version, and available test/browser tooling.
+[x] Inspect the current working directory, Git status, existing source files, Python version, and available test/browser tooling.
 
-[ ] Do not delete or overwrite existing work without inspecting it.
+[x] Do not delete or overwrite existing work without inspecting it.
 
-[ ] Initialize Git on main if needed, configure origin to https://github.com/rahulratul/LecMerge.git, and sync with any existing remote commits.
+[x] Initialize Git on main if needed, configure origin to https://github.com/rahulratul/LecMerge.git, and sync with any existing remote commits.
 
-[ ] Verify Git push access (git ls-remote origin) and GitHub CLI auth (gh auth status if installed); log results in docs/BUILD_LOG.md.
+[x] Verify Git push access (git ls-remote origin) and GitHub CLI auth (gh auth status if installed); log results in docs/BUILD_LOG.md.
 
-[ ] Create and push the develop branch from main.
+[x] Create and push the develop branch from main.
 
-[ ] Record the chosen Python environment and exact run commands in README.md or the build log.
+[x] Record the chosen Python environment and exact run commands in README.md or the build log.
 
-[ ] Check whether Swagger/OpenAPI was already practiced; do not claim it as a new tool without confirmation.
+[ ] Check whether Swagger/OpenAPI was already practiced; do not claim it as a new tool without confirmation. — PENDING student confirmation (see docs/DECISIONS.md D-005); no novelty claim made.
 
-[ ] Create a compact docs/BUILD_LOG.md with all phases listed and current status.
+[x] Create a compact docs/BUILD_LOG.md with all phases listed and current status.
 
-[ ] Record architecture or tool decisions in docs/DECISIONS.md.
+[x] Record architecture or tool decisions in docs/DECISIONS.md.
 
 Acceptance gate: Existing workspace inspected; origin points to https://github.com/rahulratul/LecMerge.git; main and develop exist (and are pushed if authenticated); scope and stack are recorded; build log exists.
 
 Phase 1 — Minimal runnable project scaffold
 
-[ ] Branch from develop as feature/p1-project-scaffold.
+[x] Branch from develop as feature/p1-project-scaffold.
 
-[ ] Create the compact folder structure from Section 6.2.
+[x] Create the compact folder structure from Section 6.2.
 
-[ ] Create a virtual-environment setup and requirements.txt containing only dependencies actually used.
+[x] Create a virtual-environment setup and requirements.txt containing only dependencies actually used.
 
-[ ] Configure FastAPI, Jinja2 templates, static CSS, and a working dashboard route.
+[x] Configure FastAPI, Jinja2 templates, static CSS, and a working dashboard route.
 
-[ ] Configure SQLite and SQLAlchemy session handling.
+[x] Configure SQLite and SQLAlchemy session handling.
 
-[ ] Add .gitignore for .venv/, __pycache__/, .pytest_cache/, .coverage, htmlcov/, local SQLite database files, and environment files.
+[x] Add .gitignore for .venv/, __pycache__/, .pytest_cache/, .coverage, htmlcov/, local SQLite database files, and environment files.
 
-[ ] Create a readable starter README.md with setup and run commands.
+[x] Create a readable starter README.md with setup and run commands.
 
-[ ] Verify that the app starts and the dashboard loads in a browser.
+[x] Verify that the app starts and the dashboard loads in a browser.
 
-[ ] Commit, push feature/p1-project-scaffold, and merge into develop (and push develop).
+[x] Commit, push feature/p1-project-scaffold, and merge into develop (and push develop).
 
 Acceptance gate: The app starts using the documented command, the dashboard renders, no database/secret/cache artifact is accidentally tracked, and the branch is pushed to origin.
 
 Phase 2 — Domain logic and three design patterns (TDD)
 
-[ ] Branch from develop as feature/p2-domain-patterns.
+[x] Branch from develop as feature/p2-domain-patterns.
 
-[ ] Write failing tests for Composite coverage and gap calculation (test(domain): ... commit).
+[x] Write failing tests for Composite coverage and gap calculation (test(domain): ... commit).
 
-[ ] Implement CoverageNode, AnchorBlockNode, LectureNode, and CourseNode with aggregation behavior (feat(domain): ... commit).
+[x] Implement CoverageNode, AnchorBlockNode, LectureNode, and CourseNode with aggregation behavior (feat(domain): ... commit).
 
-[ ] Write failing tests for MostDetailedStrategy and LatestSubmittedStrategy, including ties and empty input.
+[x] Write failing tests for MostDetailedStrategy and LatestSubmittedStrategy, including ties and empty input.
 
-[ ] Implement the Strategy interface and concrete strategies.
+[x] Implement the Strategy interface and concrete strategies.
 
-[ ] Write failing tests for potential formula conflict detection and whitespace normalization.
+[x] Write failing tests for potential formula conflict detection and whitespace normalization.
 
-[ ] Implement the documented heuristic and its limitations.
+[x] Implement the documented heuristic and its limitations.
 
-[ ] Write failing tests for the study-sheet Builder.
+[x] Write failing tests for the study-sheet Builder.
 
-[ ] Implement StudySheet and StudySheetBuilder.
+[x] Implement StudySheet and StudySheetBuilder.
 
-[ ] Save a Mermaid UML class diagram under docs/uml/class_diagram.mmd.
+[x] Save a Mermaid UML class diagram under docs/uml/class_diagram.mmd.
 
-[ ] Explain each pattern and one rejected alternative in docs/ARCHITECTURE.md.
+[x] Explain each pattern and one rejected alternative in docs/ARCHITECTURE.md.
 
-[ ] Push feature/p2-domain-patterns and integrate into develop (via GitHub PR if gh is authenticated, or --no-ff merge + push).
+[x] Push feature/p2-domain-patterns and integrate into develop (via GitHub PR if gh is authenticated, or --no-ff merge + push).
 
 Acceptance gate: All domain tests pass; the three patterns are used in the real workflow; no database or FastAPI import is required by the domain modules; TDD commits are pushed to origin.
 
 Phase 3 — Database, repository, and application service
 
-[ ] Branch from develop as feature/p3-db-and-services.
+[x] Branch from develop as feature/p3-db-and-services.
 
-[ ] Implement the four SQLAlchemy entities: Course, Lecture, AnchorBlock, NoteFragment.
+[x] Implement the four SQLAlchemy entities: Course, Lecture, AnchorBlock, NoteFragment.
 
-[ ] Implement relationships and foreign keys.
+[x] Implement relationships and foreign keys.
 
-[ ] Implement the repository interface and SQLite repository.
+[x] Implement the repository interface and SQLite repository.
 
-[ ] Implement shared service methods for course creation, lecture/block creation, fragment submission, analysis, merge, and study-sheet generation.
+[x] Implement shared service methods for course creation, lecture/block creation, fragment submission, analysis, merge, and study-sheet generation.
 
-[ ] Add repository integration tests using a temporary SQLite database.
+[x] Add repository integration tests using a temporary SQLite database.
 
-[ ] Add service unit tests using a mocked repository.
+[x] Add service unit tests using a mocked repository.
 
-[ ] Verify that merging preserves every original fragment.
+[x] Verify that merging preserves every original fragment.
 
-[ ] Record schema and service responsibilities in docs/ARCHITECTURE.md.
+[x] Record schema and service responsibilities in docs/ARCHITECTURE.md.
 
-[ ] Push feature/p3-db-and-services and integrate into develop.
+[x] Push feature/p3-db-and-services and integrate into develop.
 
 Acceptance gate: Persistence tests pass; service tests pass with the repository mocked; reopening a session/database does not lose persisted project data; invalid IDs are handled cleanly.
 
 Phase 4 — GUI: course, lecture, block, and fragment workflow
 
-[ ] Branch from develop as feature/p4-gui-workflow.
+[x] Branch from develop as feature/p4-gui-workflow.
 
-[ ] Implement the dashboard and course creation/listing.
+[x] Implement the dashboard and course creation/listing.
 
-[ ] Implement course detail and lecture creation with one block topic per line.
+[x] Implement course detail and lecture creation with one block topic per line.
 
-[ ] Implement the lecture workspace with ordered blocks and coverage display.
+[x] Implement the lecture workspace with ordered blocks and coverage display.
 
-[ ] Implement anchor block detail and text fragment submission.
+[x] Implement anchor block detail and text fragment submission.
 
-[ ] Display all saved fragments with author names and timestamps.
+[x] Display all saved fragments with author names and timestamps.
 
-[ ] Add validation messages and clear empty states.
+[x] Add validation messages and clear empty states.
 
-[ ] Add stable Selenium IDs from Section 5.2.
+[x] Add stable Selenium IDs from Section 5.2.
 
-[ ] Add simple responsive styling using local CSS following Section 5.1 UI style rules.
+[x] Add simple responsive styling using local CSS following Section 5.1 UI style rules.
 
-[ ] Verify the full create-course → create-lecture → create-blocks → submit-fragment flow manually or with an initial GUI test.
+[x] Verify the full create-course → create-lecture → create-blocks → submit-fragment flow manually or with an initial GUI test.
 
-[ ] Push feature/p4-gui-workflow and integrate into develop.
+[x] Push feature/p4-gui-workflow and integrate into develop.
 
 Acceptance gate: A user can complete the core data-entry flow through the browser; data persists after app restart; fragments do not overwrite each other.
 
 Phase 5 — Analysis, merge workspace, and Markdown export
 
-[ ] Branch from develop as feature/p5-analysis-and-merge.
+[x] Branch from develop as feature/p5-analysis-and-merge.
 
-[ ] Display covered-block counts and coverage percentage.
+[x] Display covered-block counts and coverage percentage.
 
-[ ] Display blind spots for blocks with no content.
+[x] Display blind spots for blocks with no content.
 
-[ ] Display potential formula conflict warnings using accurate wording.
+[x] Display potential formula conflict warnings using accurate wording.
 
-[ ] Add the strategy selector and merge action.
+[x] Add the strategy selector and merge action.
 
-[ ] Save canonical merged content without deleting fragments.
+[x] Save canonical merged content without deleting fragments.
 
-[ ] Implement the study-sheet page and .md download response.
+[x] Implement the study-sheet page and .md download response.
 
-[ ] Ensure unresolved conflict warnings are present in the generated study sheet.
+[x] Ensure unresolved conflict warnings are present in the generated study sheet.
 
-[ ] Add/complete service and GUI tests for analysis, merge, and export.
+[x] Add/complete service and GUI tests for analysis, merge, and export.
 
-[ ] Push feature/p5-analysis-and-merge and integrate into develop.
+[x] Push feature/p5-analysis-and-merge and integrate into develop.
 
 Acceptance gate: The end-to-end business workflow works from GUI input through analysis, merge, and Markdown download; all expected state is persisted.
 
 Phase 6 — REST API and OpenAPI documentation
 
-[ ] Branch from develop as feature/p6-rest-api-openapi.
+[x] Branch from develop as feature/p6-rest-api-openapi.
 
-[ ] Add Pydantic request and response schemas.
+[x] Add Pydantic request and response schemas.
 
-[ ] Implement the minimum API endpoints from Section 8.1.
+[x] Implement the minimum API endpoints from Section 8.1.
 
-[ ] Reuse the application service; do not duplicate business logic.
+[x] Reuse the application service; do not duplicate business logic.
 
-[ ] Add tags, summaries, descriptions, examples, and relevant error responses.
+[x] Add tags, summaries, descriptions, examples, and relevant error responses.
 
-[ ] Verify /docs loads and endpoints can be executed through Swagger UI.
+[x] Verify /docs loads and endpoints can be executed through Swagger UI.
 
-[ ] Add API integration tests for successful and invalid requests.
+[x] Add API integration tests for successful and invalid requests.
 
-[ ] Save an OpenAPI snapshot only if generation is reliable and repeatable.
+[x] Save an OpenAPI snapshot only if generation is reliable and repeatable.
 
-[ ] Push feature/p6-rest-api-openapi and integrate into develop.
+[x] Push feature/p6-rest-api-openapi and integrate into develop.
 
 Acceptance gate: /docs loads, schemas are readable, and core API operations work against the same persistent data model as the GUI.
 
 Phase 7 — Test hardening, Selenium, GitHub CI, and Git evidence
 
-[ ] Branch from develop as feature/p7-tests-selenium-ci.
+[x] Branch from develop as feature/p7-tests-selenium-ci.
 
-[ ] Run the complete unit and integration test suites.
+[x] Run the complete unit and integration test suites.
 
-[ ] Generate the actual coverage report.
+[x] Generate the actual coverage report.
 
-[ ] Implement the Selenium smoke scenario from Section 9.4.
+[x] Implement the Selenium smoke scenario from Section 9.4.
 
-[ ] Verify Selenium cleanup closes the browser and removes temporary test data.
+[x] Verify Selenium cleanup closes the browser and removes temporary test data.
 
-[ ] Configure .github/workflows/ci.yml according to Section 10.5.
+[x] Configure .github/workflows/ci.yml according to Section 10.5.
 
-[ ] Push feature/p7-tests-selenium-ci and merge into develop via PR (if gh is authenticated) or --no-ff merge + push to trigger a real GitHub Actions run.
+[x] Push feature/p7-tests-selenium-ci and merge into develop via PR (if gh is authenticated) or --no-ff merge + push to trigger a real GitHub Actions run.
 
 [ ] Inspect the actual GitHub Actions run result; fix flaky tests or CI environment issues without weakening assertions.
 
-[ ] Execute the real merge-conflict scenario from Section 10.4 (feature/conflict-doc-a and feature/conflict-doc-b), capture real conflict output in docs/evidence/merge_conflict_log.txt, resolve cleanly, re-run tests, and push to origin.
+[x] Execute the real merge-conflict scenario from Section 10.4 (feature/conflict-doc-a and feature/conflict-doc-b), capture real conflict output in docs/evidence/merge_conflict_log.txt, resolve cleanly, re-run tests, and push to origin.
 
-[ ] Create and record the required PR evidence from Section 10.3 (at least one accepted/merged PR and one revised or rejected/closed PR, or log exact manual commands if gh is unauthenticated).
+[x] Create and record the required PR evidence from Section 10.3 (at least one accepted/merged PR and one revised or rejected/closed PR, or log exact manual commands if gh is unauthenticated).
 
-[ ] Document test commands and known limitations in docs/TESTING.md.
+[x] Document test commands and known limitations in docs/TESTING.md.
 
 Acceptance gate: Unit/integration tests pass, Selenium workflow passes in a supported environment, coverage is reported honestly, real merge conflict is resolved and pushed, and at least one real GitHub Actions CI run is recorded on https://github.com/rahulratul/LecMerge.
 
 Phase 8 — Final documentation, release merge to main, and submission readiness
 
-[ ] Complete README.md with problem, features, stack, setup, run, test, GitHub repo link, and limitations.
+[x] Complete README.md with problem, features, stack, setup, run, test, GitHub repo link, and limitations.
 
-[ ] Complete docs/REQUIREMENTS.md and docs/ARCHITECTURE.md.
+[x] Complete docs/REQUIREMENTS.md and docs/ARCHITECTURE.md.
 
-[ ] Complete docs/TESTING.md with test types, mocks, Selenium, coverage, and commands.
+[x] Complete docs/TESTING.md with test types, mocks, Selenium, coverage, and commands.
 
-[ ] Complete docs/DECISIONS.md with important trade-offs and deferred features.
+[x] Complete docs/DECISIONS.md with important trade-offs and deferred features.
 
-[ ] Complete docs/BUILD_LOG.md with actual phase outcomes, branch/PR links, and CI run results.
+[x] Complete docs/BUILD_LOG.md with actual phase outcomes, branch/PR links, and CI run results.
 
-[ ] Verify UML diagram matches the implemented classes.
+[x] Verify UML diagram matches the implemented classes.
 
-[ ] Create docs/evidence/README.md listing required screenshots, real PR numbers/URLs, merge-conflict summary, and CI run URL.
+[x] Create docs/evidence/README.md listing required screenshots, real PR numbers/URLs, merge-conflict summary, and CI run URL.
 
-[ ] Capture or list required screenshots: dashboard, lecture workspace, blind spot, potential conflict, merged block, study sheet, /docs, tests/coverage, CI run, Git branches/PRs/conflict.
+[x] Capture or list required screenshots: dashboard, lecture workspace, blind spot, potential conflict, merged block, study sheet, /docs, tests/coverage, CI run, Git branches/PRs/conflict.
 
-[ ] Ensure the report outline/notes cover process model, requirements, UI mock-up, patterns and rejected alternatives, testing and mock explanation, Git evidence, tool comparison, learning log, and limitations.
+[x] Ensure the report outline/notes cover process model, requirements, UI mock-up, patterns and rejected alternatives, testing and mock explanation, Git evidence, tool comparison, learning log, and limitations.
 
-[ ] Draft a 500–700 word reflection essay based on the student's real experience; leave personal learning claims for the student to verify.
+[x] Draft a 500–700 word reflection essay based on the student's real experience; leave personal learning claims for the student to verify.
 
-[ ] Run the final verification commands from a clean terminal and record the results.
+[x] Run the final verification commands from a clean terminal and record the results.
 
-[ ] Merge verified develop into main (via final release PR if gh is authenticated, or --no-ff merge) and push main to https://github.com/rahulratul/LecMerge.
+[x] Merge verified develop into main (via final release PR if gh is authenticated, or --no-ff merge) and push main to https://github.com/rahulratul/LecMerge.
 
-[ ] Prepare the five-minute demo using Section 11.1.
+[x] Prepare the five-minute demo using Section 11.1.
 
 Acceptance gate: Code, documentation, tests, and demo flow are coherent; main and develop are synced and pushed to https://github.com/rahulratul/LecMerge; all claims are supported by real files or outputs; any uncompleted manual GitHub screenshot/review step is clearly listed rather than fabricated.
 
