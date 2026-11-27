@@ -1,0 +1,27 @@
+/* LecMerge — local stylesheet. Full design system applied in Phase 4. */
+:root {
+  --bg: #0B0D10;
+  --surface: #13161C;
+  --line: #242933;
+  --text: #F3F4F6;
+  --muted: #94A3B8;
+  --accent: #F59E0B;
+  --merged: #22C55E;
+  --conflict: #EF4444;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 14px/1.5 "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+a { color: var(--accent); text-decoration: none; }
+.topbar { display: flex; justify-content: space-between; align-items: center; padding: 10px 24px; border-bottom: 1px solid var(--line); }
+.brand { color: var(--text); font-weight: 600; }
+.topnav a { margin-left: 16px; color: var(--muted); }
+.container { max-width: 1040px; margin: 0 auto; padding: 24px; }
+h1 { font-size: 24px; letter-spacing: -0.02em; margin: 0 0 4px; }
+.muted { color: var(--muted); }
+.panel { border-top: 1px solid var(--line); padding: 16px 0; }
+.empty { color: var(--muted); }
