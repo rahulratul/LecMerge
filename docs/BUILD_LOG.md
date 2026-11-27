@@ -8,7 +8,7 @@ Remote: https://github.com/rahulratul/LecMerge
 | Phase | Name | Branch | Status |
 |---|---|---|---|
 | 0 | Workspace inspection, GitHub remote setup, scope lock | `main` (bootstrap) → `develop` | complete (1 item pending student: D-005) |
-| 1 | Minimal runnable project scaffold | `feature/p1-project-scaffold` | not started |
+| 1 | Minimal runnable project scaffold | `feature/p1-project-scaffold` | complete |
 | 2 | Domain logic and three design patterns (TDD) | `feature/p2-domain-patterns` | not started |
 | 3 | Database, repository, application service | `feature/p3-db-and-services` | not started |
 | 4 | GUI: course, lecture, block, fragment workflow | `feature/p4-gui-workflow` | not started |
@@ -75,3 +75,44 @@ Swagger/OpenAPI novelty UNCONFIRMED (D-005), stack lock (D-006).
   `brew install gh && gh auth login`.
 - **Self-directed tool confirmation pending.** Student must confirm that Swagger/OpenAPI
   was not practiced in the sessional and that the instructor accepts it.
+
+---
+
+## Phase 1 — Minimal runnable project scaffold
+
+- **Branch:** `feature/p1-project-scaffold` → merged `--no-ff` into `develop`.
+- **Commits:** `c82995c chore(repo): initialize scaffold and repository configuration`;
+  merge `19b8a9c merge: feature/p1-project-scaffold into develop`.
+- **Push:** `* [new branch] feature/p1-project-scaffold`, `ba8d455..19b8a9c develop -> develop`.
+
+### Files changed
+
+`.gitignore`, `requirements.txt`, `pytest.ini`, `README.md`, `app/__init__.py`, `app/main.py`,
+`app/database.py`, `app/models.py` (placeholder), `app/domain/__init__.py`, `app/routers/__init__.py`,
+`app/routers/web.py`, `app/templates/base.html`, `app/templates/dashboard.html`, `app/static/style.css`,
+`tests/conftest.py`, `tests/integration/test_app_smoke.py`, `docs/evidence/README.md`.
+
+### Implementation summary
+
+- FastAPI app with lifespan that calls `init_db()` (`Base.metadata.create_all`).
+- SQLAlchemy engine/session (`app/database.py`), SQLite foreign keys enabled via `PRAGMA`,
+  DB URL overridable through `LECMERGE_DATABASE_URL` (tests use a temp file).
+- Jinja2 dashboard route `/` with empty state; local CSS with the Section 5.1 palette variables.
+- `requirements.txt` lists only packages used so far (pinned to the versions pip actually installed).
+
+### Commands run and actual results
+
+- `python3.12 -m venv .venv` → Python 3.12.12.
+- `pip install fastapi "uvicorn[standard]" jinja2 sqlalchemy python-multipart pytest pytest-cov httpx selenium`
+  → installed fastapi 0.165.0, uvicorn 0.54.0, jinja2 3.1.6, sqlalchemy 2.1.9, pytest 9.2.0,
+  httpx 0.29.0, selenium 4.54.0, pytest-cov 7.1.0, python-multipart 0.0.34 (latter three not yet
+  in requirements.txt; added in the phase that uses them).
+- `pytest -q` → `2 passed, 1 warning` (warning: Starlette deprecation notice about `httpx` in TestClient).
+- `uvicorn app.main:app --port 8000` → `Application startup complete`.
+- Headless Chrome via Selenium Manager loaded `http://127.0.0.1:8000/` →
+  `TITLE: LecMerge`, body contained "No courses yet." (screenshot kept in agent scratch, not committed).
+- `git check-ignore -v lecmerge.db .venv` → both ignored; `git status --short` showed no DB/cache files staged.
+
+### Limitations
+
+- Dashboard has no create form yet (Phase 4). The Starlette `httpx` deprecation warning is harmless for now.

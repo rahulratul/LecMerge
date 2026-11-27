@@ -1153,23 +1153,23 @@ Acceptance gate: Existing workspace inspected; origin points to https://github.c
 
 Phase 1 — Minimal runnable project scaffold
 
-[ ] Branch from develop as feature/p1-project-scaffold.
+[x] Branch from develop as feature/p1-project-scaffold.
 
-[ ] Create the compact folder structure from Section 6.2.
+[x] Create the compact folder structure from Section 6.2.
 
-[ ] Create a virtual-environment setup and requirements.txt containing only dependencies actually used.
+[x] Create a virtual-environment setup and requirements.txt containing only dependencies actually used.
 
-[ ] Configure FastAPI, Jinja2 templates, static CSS, and a working dashboard route.
+[x] Configure FastAPI, Jinja2 templates, static CSS, and a working dashboard route.
 
-[ ] Configure SQLite and SQLAlchemy session handling.
+[x] Configure SQLite and SQLAlchemy session handling.
 
-[ ] Add .gitignore for .venv/, __pycache__/, .pytest_cache/, .coverage, htmlcov/, local SQLite database files, and environment files.
+[x] Add .gitignore for .venv/, __pycache__/, .pytest_cache/, .coverage, htmlcov/, local SQLite database files, and environment files.
 
-[ ] Create a readable starter README.md with setup and run commands.
+[x] Create a readable starter README.md with setup and run commands.
 
-[ ] Verify that the app starts and the dashboard loads in a browser.
+[x] Verify that the app starts and the dashboard loads in a browser.
 
-[ ] Commit, push feature/p1-project-scaffold, and merge into develop (and push develop).
+[x] Commit, push feature/p1-project-scaffold, and merge into develop (and push develop).
 
 Acceptance gate: The app starts using the documented command, the dashboard renders, no database/secret/cache artifact is accidentally tracked, and the branch is pushed to origin.
 
