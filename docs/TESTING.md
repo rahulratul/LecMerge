@@ -87,9 +87,7 @@ pytest tests/e2e -q
 
 ## 6. Known testing limitations
 
-- `pytest` emits one `StarletteDeprecationWarning` from FastAPI's `TestClient` wrapper
-  (`httpx` vs `httpx2`); this is upstream in FastAPI 0.165 / Starlette 1.10 and does not
-  affect test assertions.
+- `pytest` runs with zero warnings (`httpx2==2.16.2` satisfies Starlette 1.10's `TestClient` without deprecation warnings).
 - The Selenium test requires Chrome/Chromium on the host (on macOS, Google Chrome is
   installed; on GitHub Actions `ubuntu-latest`, Google Chrome is preinstalled and Selenium
   Manager resolves ChromeDriver automatically).
