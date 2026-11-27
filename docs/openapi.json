@@ -1,0 +1,981 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "LecMerge API",
+    "description": "Collaborative Lecture Note Organizer and Study-Sheet Compiler. Exposes the same application service layer used by the server-rendered GUI.",
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/api/v1/courses": {
+      "get": {
+        "tags": [
+          "Courses"
+        ],
+        "summary": "List all courses",
+        "description": "Return all stored courses ordered by course code.",
+        "operationId": "list_courses_api_v1_courses_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/CourseOut"
+                  },
+                  "type": "array",
+                  "title": "Response List Courses Api V1 Courses Get"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Courses"
+        ],
+        "summary": "Create a course",
+        "description": "Create a new course with a unique course code and title.",
+        "operationId": "create_course_api_v1_courses_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CourseCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CourseOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation or duplicate course code error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/courses/{course_id}/lectures": {
+      "post": {
+        "tags": [
+          "Lectures"
+        ],
+        "summary": "Create a lecture with ordered anchor blocks",
+        "description": "Create a lecture under an existing course together with its initial ordered topic blocks.",
+        "operationId": "create_lecture_api_v1_courses__course_id__lectures_post",
+        "parameters": [
+          {
+            "name": "course_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Course Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LectureCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LectureOut"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Course not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/blocks/{block_id}/fragments": {
+      "post": {
+        "tags": [
+          "Fragments & Merge"
+        ],
+        "summary": "Submit a note fragment",
+        "description": "Attach a contributor's text fragment to an anchor block without overwriting existing fragments.",
+        "operationId": "submit_fragment_api_v1_blocks__block_id__fragments_post",
+        "parameters": [
+          {
+            "name": "block_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Block Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FragmentCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FragmentOut"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Anchor block not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/lectures/{lecture_id}/analysis": {
+      "get": {
+        "tags": [
+          "Analysis & Export"
+        ],
+        "summary": "Analyze lecture coverage, blind spots, and potential conflicts",
+        "description": "Compute coverage via the Composite hierarchy and flag potential formula conflicts per block.",
+        "operationId": "analyze_lecture_api_v1_lectures__lecture_id__analysis_get",
+        "parameters": [
+          {
+            "name": "lecture_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Lecture Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LectureAnalysisOut"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Lecture not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/blocks/{block_id}/merge": {
+      "post": {
+        "tags": [
+          "Fragments & Merge"
+        ],
+        "summary": "Merge a block using a selected strategy",
+        "description": "Select one canonical fragment using the requested strategy and persist it while keeping all fragments.",
+        "operationId": "merge_block_api_v1_blocks__block_id__merge_post",
+        "parameters": [
+          {
+            "name": "block_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Block Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MergeRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MergeResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Anchor block not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Block has no fragments or invalid strategy",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/lectures/{lecture_id}/study-sheet": {
+      "get": {
+        "tags": [
+          "Analysis & Export"
+        ],
+        "summary": "Generate or download a Markdown study sheet",
+        "description": "Compile the lecture into Markdown via StudySheetBuilder. Pass download=true to receive a .md attachment.",
+        "operationId": "get_study_sheet_api_v1_lectures__lecture_id__study_sheet_get",
+        "parameters": [
+          {
+            "name": "lecture_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Lecture Id"
+            }
+          },
+          {
+            "name": "download",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "description": "Return raw Markdown as a downloadable .md file.",
+              "default": false,
+              "title": "Download"
+            },
+            "description": "Return raw Markdown as a downloadable .md file."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StudySheetOut"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Lecture not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AnchorBlockOut": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "lecture_id": {
+            "type": "integer",
+            "title": "Lecture Id"
+          },
+          "order_index": {
+            "type": "integer",
+            "title": "Order Index"
+          },
+          "topic": {
+            "type": "string",
+            "title": "Topic"
+          },
+          "merged_content": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Merged Content"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "lecture_id",
+          "order_index",
+          "topic",
+          "created_at"
+        ],
+        "title": "AnchorBlockOut"
+      },
+      "BlockAnalysisOut": {
+        "properties": {
+          "block_id": {
+            "type": "integer",
+            "title": "Block Id"
+          },
+          "order_index": {
+            "type": "integer",
+            "title": "Order Index"
+          },
+          "topic": {
+            "type": "string",
+            "title": "Topic"
+          },
+          "fragment_count": {
+            "type": "integer",
+            "title": "Fragment Count"
+          },
+          "has_merged_content": {
+            "type": "boolean",
+            "title": "Has Merged Content"
+          },
+          "merged_content": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Merged Content"
+          },
+          "is_blind_spot": {
+            "type": "boolean",
+            "title": "Is Blind Spot"
+          },
+          "has_potential_conflict": {
+            "type": "boolean",
+            "title": "Has Potential Conflict"
+          },
+          "conflict_lines": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Conflict Lines"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          }
+        },
+        "type": "object",
+        "required": [
+          "block_id",
+          "order_index",
+          "topic",
+          "fragment_count",
+          "has_merged_content",
+          "merged_content",
+          "is_blind_spot",
+          "has_potential_conflict",
+          "conflict_lines",
+          "status"
+        ],
+        "title": "BlockAnalysisOut"
+      },
+      "CourseCreate": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "maxLength": 32,
+            "minLength": 1,
+            "title": "Code",
+            "examples": [
+              "CSE 3206"
+            ]
+          },
+          "title": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 1,
+            "title": "Title",
+            "examples": [
+              "Software Engineering Sessional"
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "code",
+          "title"
+        ],
+        "title": "CourseCreate"
+      },
+      "CourseOut": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "code": {
+            "type": "string",
+            "title": "Code"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "code",
+          "title",
+          "created_at"
+        ],
+        "title": "CourseOut"
+      },
+      "ErrorResponse": {
+        "properties": {
+          "detail": {
+            "type": "string",
+            "title": "Detail",
+            "examples": [
+              "Course 99 not found."
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "detail"
+        ],
+        "title": "ErrorResponse"
+      },
+      "FragmentCreate": {
+        "properties": {
+          "author_name": {
+            "type": "string",
+            "maxLength": 120,
+            "minLength": 1,
+            "title": "Author Name",
+            "examples": [
+              "Amina"
+            ]
+          },
+          "content": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Content",
+            "examples": [
+              "F = ma\nApplies to constant mass systems."
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "author_name",
+          "content"
+        ],
+        "title": "FragmentCreate"
+      },
+      "FragmentOut": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "block_id": {
+            "type": "integer",
+            "title": "Block Id"
+          },
+          "author_name": {
+            "type": "string",
+            "title": "Author Name"
+          },
+          "content": {
+            "type": "string",
+            "title": "Content"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "block_id",
+          "author_name",
+          "content",
+          "created_at"
+        ],
+        "title": "FragmentOut"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "LectureAnalysisOut": {
+        "properties": {
+          "lecture_id": {
+            "type": "integer",
+            "title": "Lecture Id"
+          },
+          "lecture_title": {
+            "type": "string",
+            "title": "Lecture Title"
+          },
+          "course_id": {
+            "type": "integer",
+            "title": "Course Id"
+          },
+          "course_code": {
+            "type": "string",
+            "title": "Course Code"
+          },
+          "course_title": {
+            "type": "string",
+            "title": "Course Title"
+          },
+          "total_blocks": {
+            "type": "integer",
+            "title": "Total Blocks"
+          },
+          "covered_blocks": {
+            "type": "integer",
+            "title": "Covered Blocks"
+          },
+          "coverage_percent": {
+            "type": "number",
+            "title": "Coverage Percent"
+          },
+          "blind_spot_ids": {
+            "items": {
+              "type": "integer"
+            },
+            "type": "array",
+            "title": "Blind Spot Ids"
+          },
+          "blocks": {
+            "items": {
+              "$ref": "#/components/schemas/BlockAnalysisOut"
+            },
+            "type": "array",
+            "title": "Blocks"
+          }
+        },
+        "type": "object",
+        "required": [
+          "lecture_id",
+          "lecture_title",
+          "course_id",
+          "course_code",
+          "course_title",
+          "total_blocks",
+          "covered_blocks",
+          "coverage_percent",
+          "blind_spot_ids",
+          "blocks"
+        ],
+        "title": "LectureAnalysisOut"
+      },
+      "LectureCreate": {
+        "properties": {
+          "title": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 1,
+            "title": "Title",
+            "examples": [
+              "Lecture 4: Design Patterns"
+            ]
+          },
+          "lecture_date": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 32
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Lecture Date",
+            "examples": [
+              "2026-11-28"
+            ]
+          },
+          "block_topics": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Block Topics",
+            "examples": [
+              [
+                "Composite Pattern",
+                "Strategy Pattern",
+                "Builder Pattern"
+              ]
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "title"
+        ],
+        "title": "LectureCreate"
+      },
+      "LectureOut": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "course_id": {
+            "type": "integer",
+            "title": "Course Id"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "lecture_date": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Lecture Date"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "blocks": {
+            "items": {
+              "$ref": "#/components/schemas/AnchorBlockOut"
+            },
+            "type": "array",
+            "title": "Blocks"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "course_id",
+          "title",
+          "created_at"
+        ],
+        "title": "LectureOut"
+      },
+      "MergeRequest": {
+        "properties": {
+          "strategy": {
+            "type": "string",
+            "enum": [
+              "most_detailed",
+              "latest_submitted"
+            ],
+            "title": "Strategy",
+            "description": "Merge strategy key used to select one canonical fragment.",
+            "default": "most_detailed",
+            "examples": [
+              "most_detailed"
+            ]
+          }
+        },
+        "type": "object",
+        "title": "MergeRequest"
+      },
+      "MergeResponse": {
+        "properties": {
+          "block_id": {
+            "type": "integer",
+            "title": "Block Id"
+          },
+          "strategy_key": {
+            "type": "string",
+            "title": "Strategy Key"
+          },
+          "strategy_label": {
+            "type": "string",
+            "title": "Strategy Label"
+          },
+          "selected_fragment_id": {
+            "type": "integer",
+            "title": "Selected Fragment Id"
+          },
+          "selected_author": {
+            "type": "string",
+            "title": "Selected Author"
+          },
+          "merged_content": {
+            "type": "string",
+            "title": "Merged Content"
+          },
+          "fragment_count": {
+            "type": "integer",
+            "title": "Fragment Count"
+          },
+          "has_potential_conflict": {
+            "type": "boolean",
+            "title": "Has Potential Conflict"
+          },
+          "conflict_lines": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Conflict Lines"
+          }
+        },
+        "type": "object",
+        "required": [
+          "block_id",
+          "strategy_key",
+          "strategy_label",
+          "selected_fragment_id",
+          "selected_author",
+          "merged_content",
+          "fragment_count",
+          "has_potential_conflict",
+          "conflict_lines"
+        ],
+        "title": "MergeResponse"
+      },
+      "StudySheetOut": {
+        "properties": {
+          "lecture_id": {
+            "type": "integer",
+            "title": "Lecture Id"
+          },
+          "lecture_title": {
+            "type": "string",
+            "title": "Lecture Title"
+          },
+          "course_code": {
+            "type": "string",
+            "title": "Course Code"
+          },
+          "course_title": {
+            "type": "string",
+            "title": "Course Title"
+          },
+          "total_blocks": {
+            "type": "integer",
+            "title": "Total Blocks"
+          },
+          "covered_blocks": {
+            "type": "integer",
+            "title": "Covered Blocks"
+          },
+          "coverage_percent": {
+            "type": "number",
+            "title": "Coverage Percent"
+          },
+          "warnings": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Warnings"
+          },
+          "filename": {
+            "type": "string",
+            "title": "Filename"
+          },
+          "markdown": {
+            "type": "string",
+            "title": "Markdown"
+          }
+        },
+        "type": "object",
+        "required": [
+          "lecture_id",
+          "lecture_title",
+          "course_code",
+          "course_title",
+          "total_blocks",
+          "covered_blocks",
+          "coverage_percent",
+          "warnings",
+          "filename",
+          "markdown"
+        ],
+        "title": "StudySheetOut"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  }
+}

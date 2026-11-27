@@ -12,7 +12,7 @@ Remote: https://github.com/rahulratul/LecMerge
 | 2 | Domain logic and three design patterns (TDD) | `feature/p2-domain-patterns` | complete |
 | 3 | Database, repository, application service | `feature/p3-db-and-services` | complete |
 | 4 | GUI: course, lecture, block, fragment workflow | `feature/p4-gui-workflow` | complete |
-| 5 | Analysis, merge workspace, Markdown export | `feature/p5-analysis-and-merge` | not started |
+| 5 | Analysis, merge workspace, Markdown export | `feature/p5-analysis-and-merge` | complete |
 | 6 | REST API and OpenAPI documentation | `feature/p6-rest-api-openapi` | not started |
 | 7 | Test hardening, Selenium, GitHub CI, Git evidence | `feature/p7-tests-selenium-ci` | not started |
 | 8 | Final documentation, release merge, submission readiness | `develop` → `main` | not started |
@@ -242,3 +242,37 @@ Swagger/OpenAPI novelty UNCONFIRMED (D-005), stack lock (D-006).
 ### Limitations
 
 - Merge action and study-sheet page/download are wired in Phase 5.
+
+---
+
+## Phase 5 — Analysis, merge workspace, and Markdown export
+
+- **Branch:** `feature/p5-analysis-and-merge` → merged `--no-ff` into `develop`.
+- **Commits:** `b77028e feat(merge): add GUI merge workspace, study-sheet page, and Markdown download`;
+  merge `dbfdabd merge: feature/p5-analysis-and-merge into develop`.
+- **Push:** `feature/p5-analysis-and-merge` and `develop` pushed to `origin` (`7857d5a..dbfdabd`).
+
+### Files changed
+
+`app/routers/web.py`, `app/templates/block_detail.html`, `app/templates/study_sheet.html`,
+`tests/integration/test_gui_workflow.py`.
+
+### Implementation summary
+
+- Added Merge Workspace form on `/blocks/{block_id}` with `#merge-strategy-select`
+  (`most_detailed`, `latest_submitted`) and `#merge-submit-btn` posting to `/blocks/{block_id}/merge`.
+- Canonical merged content displays above original fragments; original fragments are preserved
+  and potential formula-conflict warnings remain visible.
+- Added `/lectures/{lecture_id}/study-sheet` (metrics, unresolved warnings, readable Markdown
+  preview, download link `#study-sheet-download-link`) and `/lectures/{lecture_id}/study-sheet/download`
+  serving `text/markdown; charset=utf-8` with `Content-Disposition: attachment`.
+- Added integration test verifying empty-block merge rejection (422), merge persistence,
+  blind-spot and conflict display, and `.md` download.
+
+### Commands run and actual results
+
+- `pytest -q` → `52 passed, 1 warning in 0.45s`.
+
+### Limitations
+
+- Versioned REST API endpoints (`/api/v1/...`) and OpenAPI schemas are added in Phase 6.
