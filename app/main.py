@@ -13,7 +13,7 @@ from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 
 from app.database import init_db
-from app.routers import web
+from app.routers import api, web
 
 BASE_DIR = Path(__file__).resolve().parent
 
@@ -25,11 +25,15 @@ async def lifespan(_app: FastAPI) -> AsyncIterator[None]:
 
 
 app = FastAPI(
-    title="LecMerge",
-    description="Collaborative Lecture Note Organizer and Study-Sheet Compiler.",
+    title="LecMerge API",
+    description=(
+        "Collaborative Lecture Note Organizer and Study-Sheet Compiler. "
+        "Exposes the same application service layer used by the server-rendered GUI."
+    ),
     version="0.1.0",
     lifespan=lifespan,
 )
 
 app.mount("/static", StaticFiles(directory=BASE_DIR / "static"), name="static")
 app.include_router(web.router)
+app.include_router(api.router)
