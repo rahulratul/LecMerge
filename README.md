@@ -1,7 +1,6 @@
 # LecMerge
 
 **Collaborative Lecture Note Organizer and Study-Sheet Compiler**  
-Course: CSE 3206 — Software Engineering Sessional (22 Series), RUET  
 Repository: https://github.com/rahulratul/LecMerge
 
 ## Problem
