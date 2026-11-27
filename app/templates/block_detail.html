@@ -87,6 +87,24 @@
         <button type="submit" class="btn" id="fragment-submit-btn">Submit fragment</button>
       </form>
     </section>
+
+    <section class="surface" style="margin-top: 16px;">
+      <h2>Merge Workspace</h2>
+      <p class="help" style="margin-top: 0; margin-bottom: 12px;">
+        Choose a rule to save one canonical selection. All submitted fragments are preserved.
+      </p>
+      <form method="post" action="/blocks/{{ block.id }}/merge" id="merge-form">
+        <div class="form-group">
+          <label for="merge-strategy-select">Merge strategy</label>
+          <select id="merge-strategy-select" name="strategy">
+            {% for strat in strategies %}
+            <option value="{{ strat.key }}">{{ strat.label }} — {{ strat.description }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <button type="submit" class="btn" id="merge-submit-btn">Save canonical merge</button>
+      </form>
+    </section>
   </div>
 </div>
 {% endblock %}
