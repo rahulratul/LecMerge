@@ -71,3 +71,30 @@ with text on both sides of the first `=`. Candidates are compared with all white
 removed; two or more distinct candidates in one block produce the UI text
 "Potential formula conflict — review required". It does not understand mathematics, can
 flag compatible formulas, and can miss disagreements written without `=`.
+
+## 3. Data model (`app/models.py`)
+
+Four SQLAlchemy tables in SQLite with `PRAGMA foreign_keys=ON` and `CASCADE` deletes:
+
+| Table | Key columns | Relationships |
+|---|---|---|
+| `courses` | `id`, `code` (unique, indexed), `title`, `created_at` | 1:N `lectures` |
+| `lectures` | `id`, `course_id` (FK), `title`, `lecture_date` (optional), `created_at` | N:1 `course`, 1:N `blocks` (ordered by `order_index`) |
+| `anchor_blocks` | `id`, `lecture_id` (FK), `order_index`, `topic`, `merged_content` (nullable), `created_at` | N:1 `lecture`, 1:N `fragments` (ordered by `created_at, id`) |
+| `note_fragments` | `id`, `block_id` (FK), `author_name`, `content`, `created_at` | N:1 `block` |
+
+## 4. Repository & application service (`app/repository.py`, `app/services.py`)
+
+- `LecMergeRepository` defines the persistence contract; `SQLiteRepository` implements it
+  with SQLAlchemy `selectinload` queries so relationships are loaded deterministically.
+- `LecMergeService` is the single orchestration layer called by both GUI (`app/routers/web.py`)
+  and REST API (`app/routers/api.py`):
+  - Course CRUD (`list_courses`, `create_course`, `get_course`, `get_course_coverage`)
+  - Lecture/block creation & lookup (`create_lecture`, `get_lecture`, `get_block`)
+  - Fragment intake (`submit_fragment`)
+  - Analysis (`analyze_lecture`, `analyze_block_entity`) combining Composite + conflict heuristic
+  - Merge (`merge_block`) applying Strategy and persisting `merged_content` while keeping all
+    original `note_fragments` intact
+  - Study-sheet compilation (`generate_study_sheet`) via `StudySheetBuilder`
+- Raises domain/application exceptions (`NotFoundError`, `ValidationError`) so routers map
+  them cleanly to 404 or 422/form validation messages.
