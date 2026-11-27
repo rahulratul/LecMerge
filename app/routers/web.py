@@ -6,7 +6,7 @@ from pathlib import Path
 from urllib.parse import quote_plus
 
 from fastapi import APIRouter, Depends, Form, Request
-from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi.responses import HTMLResponse, RedirectResponse, Response
 from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
 
@@ -249,3 +249,77 @@ def submit_fragment_form(
             status_code=422,
         )
     return _redirect(f"/blocks/{block_id}", "Fragment submitted.")
+
+
+@router.post("/blocks/{block_id}/merge", response_class=HTMLResponse)
+def merge_block_form(
+    request: Request,
+    block_id: int,
+    strategy: str = Form("most_detailed"),
+    service: LecMergeService = Depends(get_service),
+):
+    try:
+        result = service.merge_block(block_id=block_id, strategy_key=strategy)
+    except NotFoundError as exc:
+        return _not_found_response(request, str(exc))
+    except ValidationError as exc:
+        block = service.get_block(block_id)
+        analysis = service.analyze_block_entity(block)
+        return templates.TemplateResponse(
+            request,
+            "block_detail.html",
+            {
+                "block": block,
+                "analysis": analysis,
+                "strategies": list(STRATEGIES.values()),
+                "conflict_warning": CONFLICT_WARNING,
+                "message": None,
+                "error": str(exc),
+                "form_author": "",
+                "form_content": "",
+            },
+            status_code=422,
+        )
+    return _redirect(
+        f"/blocks/{block_id}",
+        f"Canonical selection saved using '{result.strategy_label}' (fragment #{result.selected_fragment_id} by {result.selected_author}).",
+    )
+
+
+# --- Page 5: Study sheet ---
+
+
+@router.get("/lectures/{lecture_id}/study-sheet", response_class=HTMLResponse)
+def study_sheet_page(
+    request: Request,
+    lecture_id: int,
+    service: LecMergeService = Depends(get_service),
+) -> HTMLResponse:
+    try:
+        sheet = service.generate_study_sheet(lecture_id)
+    except NotFoundError as exc:
+        return _not_found_response(request, str(exc))
+
+    return templates.TemplateResponse(
+        request,
+        "study_sheet.html",
+        {"sheet": sheet},
+    )
+
+
+@router.get("/lectures/{lecture_id}/study-sheet/download")
+def download_study_sheet(
+    request: Request,
+    lecture_id: int,
+    service: LecMergeService = Depends(get_service),
+) -> Response:
+    try:
+        sheet = service.generate_study_sheet(lecture_id)
+    except NotFoundError as exc:
+        return _not_found_response(request, str(exc))
+
+    return Response(
+        content=sheet.markdown,
+        media_type="text/markdown; charset=utf-8",
+        headers={"Content-Disposition": f'attachment; filename="{sheet.filename}"'},
+    )
