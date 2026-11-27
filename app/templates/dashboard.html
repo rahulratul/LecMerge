@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}LecMerge — Dashboard{% endblock %}
+{% block content %}
+<section class="page-head">
+  <div>
+    <h1>LecMerge</h1>
+    <p class="muted">Organize classmate lecture notes into topic blocks, review coverage and potential formula conflicts, and compile a Markdown study sheet.</p>
+  </div>
+</section>
+
+{% if message %}
+<div class="alert alert-success" id="flash-message">{{ message }}</div>
+{% endif %}
+{% if error %}
+<div class="alert alert-error" id="form-error">{{ error }}</div>
+{% endif %}
+
+<div class="split">
+  <section class="panel">
+    <h2>Courses</h2>
+    {% if courses %}
+    <ul class="rows" id="course-list">
+      {% for course in courses %}
+      <li class="row">
+        <div class="row-main">
+          <span class="code-tag">{{ course.code }}</span>
+          <a class="row-title" href="/courses/{{ course.id }}">{{ course.title }}</a>
+        </div>
+        <div class="row-meta mono muted">
+          <span>{{ course.lectures | length }} lecture(s)</span>
+          <a href="/courses/{{ course.id }}">Open</a>
+        </div>
+      </li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <p class="empty" id="courses-empty">No courses yet. Create the first course using the form.</p>
+    {% endif %}
+  </section>
+
+  <section class="surface">
+    <h2>New Course</h2>
+    <form method="post" action="/courses" id="create-course-form">
+      <div class="form-group">
+        <label for="course-code">Course code</label>
+        <input type="text" id="course-code" name="code" value="{{ form_code }}" placeholder="CSE 3206" required>
+      </div>
+      <div class="form-group">
+        <label for="course-title">Course title</label>
+        <input type="text" id="course-title" name="title" value="{{ form_title }}" placeholder="Software Engineering Sessional" required>
+      </div>
+      <button type="submit" class="btn" id="course-submit-btn">Create course</button>
+    </form>
+  </section>
+</div>
+{% endblock %}

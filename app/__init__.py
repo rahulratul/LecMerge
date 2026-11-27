@@ -1,0 +1,1 @@
+"""LecMerge application package."""

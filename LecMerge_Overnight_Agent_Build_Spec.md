@@ -1131,97 +1131,97 @@ Execution rule: Complete and verify each phase before starting the next. After m
 
 Phase 0 — Workspace inspection, GitHub remote setup, and scope lock
 
-[ ] Inspect the current working directory, Git status, existing source files, Python version, and available test/browser tooling.
+[x] Inspect the current working directory, Git status, existing source files, Python version, and available test/browser tooling.
 
-[ ] Do not delete or overwrite existing work without inspecting it.
+[x] Do not delete or overwrite existing work without inspecting it.
 
-[ ] Initialize Git on main if needed, configure origin to https://github.com/rahulratul/LecMerge.git, and sync with any existing remote commits.
+[x] Initialize Git on main if needed, configure origin to https://github.com/rahulratul/LecMerge.git, and sync with any existing remote commits.
 
-[ ] Verify Git push access (git ls-remote origin) and GitHub CLI auth (gh auth status if installed); log results in docs/BUILD_LOG.md.
+[x] Verify Git push access (git ls-remote origin) and GitHub CLI auth (gh auth status if installed); log results in docs/BUILD_LOG.md.
 
-[ ] Create and push the develop branch from main.
+[x] Create and push the develop branch from main.
 
-[ ] Record the chosen Python environment and exact run commands in README.md or the build log.
+[x] Record the chosen Python environment and exact run commands in README.md or the build log.
 
-[ ] Check whether Swagger/OpenAPI was already practiced; do not claim it as a new tool without confirmation.
+[ ] Check whether Swagger/OpenAPI was already practiced; do not claim it as a new tool without confirmation. — PENDING student confirmation (see docs/DECISIONS.md D-005); no novelty claim made.
 
-[ ] Create a compact docs/BUILD_LOG.md with all phases listed and current status.
+[x] Create a compact docs/BUILD_LOG.md with all phases listed and current status.
 
-[ ] Record architecture or tool decisions in docs/DECISIONS.md.
+[x] Record architecture or tool decisions in docs/DECISIONS.md.
 
 Acceptance gate: Existing workspace inspected; origin points to https://github.com/rahulratul/LecMerge.git; main and develop exist (and are pushed if authenticated); scope and stack are recorded; build log exists.
 
 Phase 1 — Minimal runnable project scaffold
 
-[ ] Branch from develop as feature/p1-project-scaffold.
+[x] Branch from develop as feature/p1-project-scaffold.
 
-[ ] Create the compact folder structure from Section 6.2.
+[x] Create the compact folder structure from Section 6.2.
 
-[ ] Create a virtual-environment setup and requirements.txt containing only dependencies actually used.
+[x] Create a virtual-environment setup and requirements.txt containing only dependencies actually used.
 
-[ ] Configure FastAPI, Jinja2 templates, static CSS, and a working dashboard route.
+[x] Configure FastAPI, Jinja2 templates, static CSS, and a working dashboard route.
 
-[ ] Configure SQLite and SQLAlchemy session handling.
+[x] Configure SQLite and SQLAlchemy session handling.
 
-[ ] Add .gitignore for .venv/, __pycache__/, .pytest_cache/, .coverage, htmlcov/, local SQLite database files, and environment files.
+[x] Add .gitignore for .venv/, __pycache__/, .pytest_cache/, .coverage, htmlcov/, local SQLite database files, and environment files.
 
-[ ] Create a readable starter README.md with setup and run commands.
+[x] Create a readable starter README.md with setup and run commands.
 
-[ ] Verify that the app starts and the dashboard loads in a browser.
+[x] Verify that the app starts and the dashboard loads in a browser.
 
-[ ] Commit, push feature/p1-project-scaffold, and merge into develop (and push develop).
+[x] Commit, push feature/p1-project-scaffold, and merge into develop (and push develop).
 
 Acceptance gate: The app starts using the documented command, the dashboard renders, no database/secret/cache artifact is accidentally tracked, and the branch is pushed to origin.
 
 Phase 2 — Domain logic and three design patterns (TDD)
 
-[ ] Branch from develop as feature/p2-domain-patterns.
+[x] Branch from develop as feature/p2-domain-patterns.
 
-[ ] Write failing tests for Composite coverage and gap calculation (test(domain): ... commit).
+[x] Write failing tests for Composite coverage and gap calculation (test(domain): ... commit).
 
-[ ] Implement CoverageNode, AnchorBlockNode, LectureNode, and CourseNode with aggregation behavior (feat(domain): ... commit).
+[x] Implement CoverageNode, AnchorBlockNode, LectureNode, and CourseNode with aggregation behavior (feat(domain): ... commit).
 
-[ ] Write failing tests for MostDetailedStrategy and LatestSubmittedStrategy, including ties and empty input.
+[x] Write failing tests for MostDetailedStrategy and LatestSubmittedStrategy, including ties and empty input.
 
-[ ] Implement the Strategy interface and concrete strategies.
+[x] Implement the Strategy interface and concrete strategies.
 
-[ ] Write failing tests for potential formula conflict detection and whitespace normalization.
+[x] Write failing tests for potential formula conflict detection and whitespace normalization.
 
-[ ] Implement the documented heuristic and its limitations.
+[x] Implement the documented heuristic and its limitations.
 
-[ ] Write failing tests for the study-sheet Builder.
+[x] Write failing tests for the study-sheet Builder.
 
-[ ] Implement StudySheet and StudySheetBuilder.
+[x] Implement StudySheet and StudySheetBuilder.
 
-[ ] Save a Mermaid UML class diagram under docs/uml/class_diagram.mmd.
+[x] Save a Mermaid UML class diagram under docs/uml/class_diagram.mmd.
 
-[ ] Explain each pattern and one rejected alternative in docs/ARCHITECTURE.md.
+[x] Explain each pattern and one rejected alternative in docs/ARCHITECTURE.md.
 
-[ ] Push feature/p2-domain-patterns and integrate into develop (via GitHub PR if gh is authenticated, or --no-ff merge + push).
+[x] Push feature/p2-domain-patterns and integrate into develop (via GitHub PR if gh is authenticated, or --no-ff merge + push).
 
 Acceptance gate: All domain tests pass; the three patterns are used in the real workflow; no database or FastAPI import is required by the domain modules; TDD commits are pushed to origin.
 
 Phase 3 — Database, repository, and application service
 
-[ ] Branch from develop as feature/p3-db-and-services.
+[x] Branch from develop as feature/p3-db-and-services.
 
-[ ] Implement the four SQLAlchemy entities: Course, Lecture, AnchorBlock, NoteFragment.
+[x] Implement the four SQLAlchemy entities: Course, Lecture, AnchorBlock, NoteFragment.
 
-[ ] Implement relationships and foreign keys.
+[x] Implement relationships and foreign keys.
 
-[ ] Implement the repository interface and SQLite repository.
+[x] Implement the repository interface and SQLite repository.
 
-[ ] Implement shared service methods for course creation, lecture/block creation, fragment submission, analysis, merge, and study-sheet generation.
+[x] Implement shared service methods for course creation, lecture/block creation, fragment submission, analysis, merge, and study-sheet generation.
 
-[ ] Add repository integration tests using a temporary SQLite database.
+[x] Add repository integration tests using a temporary SQLite database.
 
-[ ] Add service unit tests using a mocked repository.
+[x] Add service unit tests using a mocked repository.
 
-[ ] Verify that merging preserves every original fragment.
+[x] Verify that merging preserves every original fragment.
 
-[ ] Record schema and service responsibilities in docs/ARCHITECTURE.md.
+[x] Record schema and service responsibilities in docs/ARCHITECTURE.md.
 
-[ ] Push feature/p3-db-and-services and integrate into develop.
+[x] Push feature/p3-db-and-services and integrate into develop.
 
 Acceptance gate: Persistence tests pass; service tests pass with the repository mocked; reopening a session/database does not lose persisted project data; invalid IDs are handled cleanly.
 
