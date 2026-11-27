@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="page-head">
+  <h1>LecMerge</h1>
+  <p class="muted">Organize lecture notes from several classmates into topic blocks, review coverage and potential formula conflicts, and compile a Markdown study sheet.</p>
+</section>
+
+<section class="panel">
+  <h2>Courses</h2>
+  {% if courses %}
+  <ul class="rows" id="course-list">
+    {% for course in courses %}
+    <li class="row"><a href="/courses/{{ course.id }}">{{ course.code }}</a> <span class="muted">{{ course.title }}</span></li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <p class="empty" id="courses-empty">No courses yet. Create the first one below.</p>
+  {% endif %}
+</section>
+{% endblock %}
