@@ -7,7 +7,7 @@ Remote: https://github.com/rahulratul/LecMerge
 
 | Phase | Name | Branch | Status |
 |---|---|---|---|
-| 0 | Workspace inspection, GitHub remote setup, scope lock | `main` (bootstrap) → `develop` | in progress |
+| 0 | Workspace inspection, GitHub remote setup, scope lock | `main` (bootstrap) → `develop` | complete (1 item pending student: D-005) |
 | 1 | Minimal runnable project scaffold | `feature/p1-project-scaffold` | not started |
 | 2 | Domain logic and three design patterns (TDD) | `feature/p2-domain-patterns` | not started |
 | 3 | Database, repository, application service | `feature/p3-db-and-services` | not started |
@@ -53,6 +53,20 @@ Remote: https://github.com/rahulratul/LecMerge
 See `docs/DECISIONS.md`: repo root layout (D-001), remote/history (D-002),
 Python 3.12 venv (D-003), `gh` missing → `--no-ff` merges and manual PR commands (D-004),
 Swagger/OpenAPI novelty UNCONFIRMED (D-005), stack lock (D-006).
+
+### Git results (actual)
+
+- `git commit` on `main`: `ba8d455 chore(repo): add build spec, decisions log, and build log for phase 0`
+- `git push -u origin main`: `5734ac6..ba8d455  main -> main`
+- `git checkout -b develop` + `git push -u origin develop`: `* [new branch]  develop -> develop`
+- `git branch -a`: `develop`, `main`, `remotes/origin/develop`, `remotes/origin/main`
+
+### Acceptance gate
+
+- Workspace inspected: yes. `origin` → `https://github.com/rahulratul/LecMerge.git`: yes.
+- `main` and `develop` exist locally and on origin: yes. Scope/stack recorded (DECISIONS D-006): yes.
+- Build log exists: yes. **Phase 0 passed.** The Swagger-novelty checkbox stays unchecked
+  pending student confirmation; it does not block the gate.
 
 ### Limitations / open items
 

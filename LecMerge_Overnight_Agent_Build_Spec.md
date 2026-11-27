@@ -1131,23 +1131,23 @@ Execution rule: Complete and verify each phase before starting the next. After m
 
 Phase 0 — Workspace inspection, GitHub remote setup, and scope lock
 
-[ ] Inspect the current working directory, Git status, existing source files, Python version, and available test/browser tooling.
+[x] Inspect the current working directory, Git status, existing source files, Python version, and available test/browser tooling.
 
-[ ] Do not delete or overwrite existing work without inspecting it.
+[x] Do not delete or overwrite existing work without inspecting it.
 
-[ ] Initialize Git on main if needed, configure origin to https://github.com/rahulratul/LecMerge.git, and sync with any existing remote commits.
+[x] Initialize Git on main if needed, configure origin to https://github.com/rahulratul/LecMerge.git, and sync with any existing remote commits.
 
-[ ] Verify Git push access (git ls-remote origin) and GitHub CLI auth (gh auth status if installed); log results in docs/BUILD_LOG.md.
+[x] Verify Git push access (git ls-remote origin) and GitHub CLI auth (gh auth status if installed); log results in docs/BUILD_LOG.md.
 
-[ ] Create and push the develop branch from main.
+[x] Create and push the develop branch from main.
 
-[ ] Record the chosen Python environment and exact run commands in README.md or the build log.
+[x] Record the chosen Python environment and exact run commands in README.md or the build log.
 
-[ ] Check whether Swagger/OpenAPI was already practiced; do not claim it as a new tool without confirmation.
+[ ] Check whether Swagger/OpenAPI was already practiced; do not claim it as a new tool without confirmation. — PENDING student confirmation (see docs/DECISIONS.md D-005); no novelty claim made.
 
-[ ] Create a compact docs/BUILD_LOG.md with all phases listed and current status.
+[x] Create a compact docs/BUILD_LOG.md with all phases listed and current status.
 
-[ ] Record architecture or tool decisions in docs/DECISIONS.md.
+[x] Record architecture or tool decisions in docs/DECISIONS.md.
 
 Acceptance gate: Existing workspace inspected; origin points to https://github.com/rahulratul/LecMerge.git; main and develop exist (and are pushed if authenticated); scope and stack are recorded; build log exists.
 
