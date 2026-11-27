@@ -10,7 +10,7 @@ Remote: https://github.com/rahulratul/LecMerge
 | 0 | Workspace inspection, GitHub remote setup, scope lock | `main` (bootstrap) → `develop` | complete (1 item pending student: D-005) |
 | 1 | Minimal runnable project scaffold | `feature/p1-project-scaffold` | complete |
 | 2 | Domain logic and three design patterns (TDD) | `feature/p2-domain-patterns` | complete |
-| 3 | Database, repository, application service | `feature/p3-db-and-services` | not started |
+| 3 | Database, repository, application service | `feature/p3-db-and-services` | complete |
 | 4 | GUI: course, lecture, block, fragment workflow | `feature/p4-gui-workflow` | not started |
 | 5 | Analysis, merge workspace, Markdown export | `feature/p5-analysis-and-merge` | not started |
 | 6 | REST API and OpenAPI documentation | `feature/p6-rest-api-openapi` | not started |
@@ -167,3 +167,40 @@ Swagger/OpenAPI novelty UNCONFIRMED (D-005), stack lock (D-006).
 ### Limitations
 
 - Domain modules are not yet wired into persistence/services (Phase 3).
+
+---
+
+## Phase 3 — Database, repository, and application service
+
+- **Branch:** `feature/p3-db-and-services` → merged `--no-ff` into `develop`.
+- **Commits:** `c146a6b feat(db): implement SQLAlchemy models, repository, and application service`;
+  merge `074d415 merge: feature/p3-db-and-services into develop`.
+- **Push:** `feature/p3-db-and-services` and `develop` pushed to `origin`.
+
+### Files changed
+
+`app/models.py`, `app/repository.py`, `app/services.py`, `tests/unit/test_services.py`,
+`tests/integration/test_repository.py`, `docs/ARCHITECTURE.md`, `docs/DECISIONS.md`.
+
+### Implementation summary
+
+- Four SQLAlchemy entities (`Course`, `Lecture`, `AnchorBlock`, `NoteFragment`) with foreign
+  keys, cascade deletes, and deterministic ordering (`order_index`, `created_at, id`).
+- `LecMergeRepository` ABC + `SQLiteRepository` with `selectinload` + `populate_existing=True`
+  so relationship collections stay fresh inside a single session (`expire_on_commit=False`).
+- `LecMergeService` orchestrating course/lecture/block CRUD, fragment intake, Composite
+  coverage + conflict analysis, Strategy-based merging (preserving all fragments), and
+  Builder-based Markdown study-sheet compilation.
+- Mocked repository unit tests (`tests/unit/test_services.py`, 10 tests) and real SQLite
+  persistence/reopen integration test (`tests/integration/test_repository.py`).
+
+### Commands run and actual results
+
+- Initial `pytest -q` caught a real identity-map caching bug (`1 failed, 49 passed`) where
+  `block.fragments` stayed stale in the same session after `add_fragment`; fixed with
+  `populate_existing=True` in `SQLiteRepository`.
+- Re-ran `pytest -q` → `50 passed, 1 warning in 0.37s`.
+
+### Limitations
+
+- Web and REST routers are not yet wired to `LecMergeService` (Phases 4–6).

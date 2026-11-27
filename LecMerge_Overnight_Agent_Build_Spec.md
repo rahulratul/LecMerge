@@ -1203,25 +1203,25 @@ Acceptance gate: All domain tests pass; the three patterns are used in the real 
 
 Phase 3 — Database, repository, and application service
 
-[ ] Branch from develop as feature/p3-db-and-services.
+[x] Branch from develop as feature/p3-db-and-services.
 
-[ ] Implement the four SQLAlchemy entities: Course, Lecture, AnchorBlock, NoteFragment.
+[x] Implement the four SQLAlchemy entities: Course, Lecture, AnchorBlock, NoteFragment.
 
-[ ] Implement relationships and foreign keys.
+[x] Implement relationships and foreign keys.
 
-[ ] Implement the repository interface and SQLite repository.
+[x] Implement the repository interface and SQLite repository.
 
-[ ] Implement shared service methods for course creation, lecture/block creation, fragment submission, analysis, merge, and study-sheet generation.
+[x] Implement shared service methods for course creation, lecture/block creation, fragment submission, analysis, merge, and study-sheet generation.
 
-[ ] Add repository integration tests using a temporary SQLite database.
+[x] Add repository integration tests using a temporary SQLite database.
 
-[ ] Add service unit tests using a mocked repository.
+[x] Add service unit tests using a mocked repository.
 
-[ ] Verify that merging preserves every original fragment.
+[x] Verify that merging preserves every original fragment.
 
-[ ] Record schema and service responsibilities in docs/ARCHITECTURE.md.
+[x] Record schema and service responsibilities in docs/ARCHITECTURE.md.
 
-[ ] Push feature/p3-db-and-services and integrate into develop.
+[x] Push feature/p3-db-and-services and integrate into develop.
 
 Acceptance gate: Persistence tests pass; service tests pass with the repository mocked; reopening a session/database does not lose persisted project data; invalid IDs are handled cleanly.
 
