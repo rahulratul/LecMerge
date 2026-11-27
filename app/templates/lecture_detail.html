@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block title %}{{ lecture.title }} — LecMerge{% endblock %}
+{% block content %}
+<nav class="breadcrumb">
+  <a href="/">Courses</a>
+  <span>/</span>
+  <a href="/courses/{{ analysis.course_id }}">{{ analysis.course_code }}</a>
+  <span>/</span>
+  <span>{{ lecture.title }}</span>
+</nav>
+
+<section class="page-head">
+  <div>
+    <h1>{{ lecture.title }}</h1>
+    <p class="muted">{{ analysis.course_code }} — {{ analysis.course_title }}{% if lecture.lecture_date %} · <span class="mono">{{ lecture.lecture_date }}</span>{% endif %}</p>
+  </div>
+  <div class="page-actions">
+    <a class="btn" id="study-sheet-link" href="/lectures/{{ lecture.id }}/study-sheet">Generate Study Sheet</a>
+  </div>
+</section>
+
+{% if message %}
+<div class="alert alert-success" id="flash-message">{{ message }}</div>
+{% endif %}
+
+<section class="metrics" id="coverage-summary">
+  <div>
+    <span class="metric-label">Coverage</span>
+    <span class="metric-value" id="coverage-percent">{{ "%.1f"|format(analysis.coverage_percent) }}%</span>
+  </div>
+  <div>
+    <span class="metric-label">Covered blocks</span>
+    <span class="metric-value" id="coverage-count">{{ analysis.covered_blocks }} / {{ analysis.total_blocks }}</span>
+  </div>
+  <div>
+    <span class="metric-label">Blind spots</span>
+    <span class="metric-value" id="blind-spot-count">{{ analysis.blind_spot_ids | length }}</span>
+  </div>
+</section>
+
+<section class="panel">
+  <h2>Anchor Blocks</h2>
+  {% if analysis.blocks %}
+  <ul class="rows" id="block-list">
+    {% for block in analysis.blocks %}
+    <li class="row" id="block-row-{{ block.block_id }}">
+      <div class="row-main">
+        <span class="mono muted">{{ "%02d"|format(block.order_index) }}</span>
+        <a class="row-title" href="/blocks/{{ block.block_id }}">{{ block.topic }}</a>
+        {% if block.has_potential_conflict %}
+        <span class="badge badge-conflict">{{ conflict_warning }}</span>
+        {% endif %}
+      </div>
+      <div class="row-meta">
+        <span class="mono muted">{{ block.fragment_count }} fragment(s)</span>
+        {% if block.status == "BLIND SPOT" %}
+        <span class="badge badge-blind">BLIND SPOT</span>
+        {% elif block.status == "POTENTIAL CONFLICT" %}
+        <span class="badge badge-conflict">POTENTIAL CONFLICT</span>
+        {% elif block.status == "MERGED" %}
+        <span class="badge badge-merged">MERGED</span>
+        {% else %}
+        <span class="badge badge-open">OPEN</span>
+        {% endif %}
+        <a class="mono" href="/blocks/{{ block.block_id }}">Open</a>
+      </div>
+    </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <p class="empty" id="blocks-empty">This lecture has no anchor blocks yet.</p>
+  {% endif %}
+</section>
+{% endblock %}
