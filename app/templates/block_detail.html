@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% block title %}{{ block.topic }} — LecMerge{% endblock %}
+{% block content %}
+<nav class="breadcrumb">
+  <a href="/">Courses</a>
+  <span>/</span>
+  <a href="/courses/{{ block.lecture.course.id }}">{{ block.lecture.course.code }}</a>
+  <span>/</span>
+  <a href="/lectures/{{ block.lecture.id }}">{{ block.lecture.title }}</a>
+  <span>/</span>
+  <span>Block {{ block.order_index }}</span>
+</nav>
+
+<section class="page-head">
+  <div>
+    <h1>{{ block.order_index }}. {{ block.topic }}</h1>
+    <p class="muted">{{ block.lecture.title }} · {{ block.lecture.course.code }}</p>
+  </div>
+  <div class="page-actions">
+    <a class="btn btn-secondary" href="/lectures/{{ block.lecture.id }}">Back to lecture</a>
+  </div>
+</section>
+
+{% if message %}
+<div class="alert alert-success" id="flash-message">{{ message }}</div>
+{% endif %}
+{% if error %}
+<div class="alert alert-error" id="form-error">{{ error }}</div>
+{% endif %}
+
+{% if analysis.has_potential_conflict %}
+<div class="alert alert-conflict" id="conflict-warning">
+  <strong>{{ conflict_warning }}.</strong>
+  <span>Multiple distinct formula-like lines were detected in this block. Review before trusting a single version:</span>
+  <ul class="conflict-list">
+    {% for line in analysis.conflict_lines %}
+    <li>{{ line }}</li>
+    {% endfor %}
+  </ul>
+</div>
+{% endif %}
+
+<div class="split">
+  <div>
+    {% if block.merged_content %}
+    <section class="canonical-box" id="canonical-content">
+      <div class="canonical-head">
+        <span class="badge badge-merged">CANONICAL SELECTION</span>
+        <span class="mono muted">Original fragments preserved below</span>
+      </div>
+      <pre class="fragment-body" id="merged-content-body">{{ block.merged_content }}</pre>
+    </section>
+    {% endif %}
+
+    <section class="panel" style="margin-top: 0;">
+      <h2>Submitted Fragments ({{ block.fragments | length }})</h2>
+      {% if block.fragments %}
+      <div id="fragment-list">
+        {% for fragment in block.fragments %}
+        <article class="fragment" id="fragment-{{ fragment.id }}">
+          <div class="fragment-head">
+            <span class="fragment-author">{{ fragment.author_name }}</span>
+            <span class="mono muted">#{{ fragment.id }} · {{ fragment.created_at.strftime("%Y-%m-%d %H:%M:%S") }} UTC</span>
+          </div>
+          <pre class="fragment-body">{{ fragment.content }}</pre>
+        </article>
+        {% endfor %}
+      </div>
+      {% else %}
+      <p class="empty" id="fragments-empty">No fragments submitted yet. This block is currently a blind spot.</p>
+      {% endif %}
+    </section>
+  </div>
+
+  <div>
+    <section class="surface">
+      <h2>Add Fragment</h2>
+      <form method="post" action="/blocks/{{ block.id }}/fragments" id="fragment-form">
+        <div class="form-group">
+          <label for="fragment-author">Contributor name</label>
+          <input type="text" id="fragment-author" name="author_name" value="{{ form_author }}" placeholder="Amina" required>
+        </div>
+        <div class="form-group">
+          <label for="fragment-content">Note fragment</label>
+          <textarea id="fragment-content" name="content" placeholder="Enter notes or formulas..." required>{{ form_content }}</textarea>
+        </div>
+        <button type="submit" class="btn" id="fragment-submit-btn">Submit fragment</button>
+      </form>
+    </section>
+  </div>
+</div>
+{% endblock %}
