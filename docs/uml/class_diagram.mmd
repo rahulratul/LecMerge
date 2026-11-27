@@ -13,10 +13,10 @@ classDiagram
         +block_id: int
         +topic: str
         +fragment_contents: Sequence~str~
-        +merged_content: str | None
+        +merged_content: Optional~str~
         +is_covered() bool
     }
-    class _CompositeNode {
+    class CompositeNode {
         +children: list~CoverageNode~
     }
     class LectureNode {
@@ -28,10 +28,10 @@ classDiagram
         +title: str
     }
     CoverageNode <|-- AnchorBlockNode
-    CoverageNode <|-- _CompositeNode
-    _CompositeNode <|-- LectureNode
-    _CompositeNode <|-- CourseNode
-    _CompositeNode o-- CoverageNode : children
+    CoverageNode <|-- CompositeNode
+    CompositeNode <|-- LectureNode
+    CompositeNode <|-- CourseNode
+    CompositeNode o-- CoverageNode : children
 
     %% ---------- Strategy (behavioral) ----------
     class MergeStrategy {
@@ -65,7 +65,7 @@ classDiagram
     }
     class StudySheet {
         +title: str
-        +course_label: str | None
+        +course_label: Optional~str~
         +coverage_lines: tuple
         +sections: tuple
         +warnings: tuple

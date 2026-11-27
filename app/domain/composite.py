@@ -63,7 +63,7 @@ class AnchorBlockNode(CoverageNode):
 
 
 @dataclass
-class _CompositeNode(CoverageNode):
+class CompositeNode(CoverageNode):
     """Shared aggregation behaviour for composite levels."""
 
     children: list[CoverageNode] = field(default_factory=list)
@@ -82,7 +82,7 @@ class _CompositeNode(CoverageNode):
 
 
 @dataclass(kw_only=True)
-class LectureNode(_CompositeNode):
+class LectureNode(CompositeNode):
     """Composite: a lecture containing anchor block leaves."""
 
     lecture_id: int
@@ -90,7 +90,7 @@ class LectureNode(_CompositeNode):
 
 
 @dataclass(kw_only=True)
-class CourseNode(_CompositeNode):
+class CourseNode(CompositeNode):
     """Composite: a course containing lecture composites."""
 
     course_id: int
