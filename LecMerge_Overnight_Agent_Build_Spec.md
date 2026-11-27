@@ -1175,29 +1175,29 @@ Acceptance gate: The app starts using the documented command, the dashboard rend
 
 Phase 2 — Domain logic and three design patterns (TDD)
 
-[ ] Branch from develop as feature/p2-domain-patterns.
+[x] Branch from develop as feature/p2-domain-patterns.
 
-[ ] Write failing tests for Composite coverage and gap calculation (test(domain): ... commit).
+[x] Write failing tests for Composite coverage and gap calculation (test(domain): ... commit).
 
-[ ] Implement CoverageNode, AnchorBlockNode, LectureNode, and CourseNode with aggregation behavior (feat(domain): ... commit).
+[x] Implement CoverageNode, AnchorBlockNode, LectureNode, and CourseNode with aggregation behavior (feat(domain): ... commit).
 
-[ ] Write failing tests for MostDetailedStrategy and LatestSubmittedStrategy, including ties and empty input.
+[x] Write failing tests for MostDetailedStrategy and LatestSubmittedStrategy, including ties and empty input.
 
-[ ] Implement the Strategy interface and concrete strategies.
+[x] Implement the Strategy interface and concrete strategies.
 
-[ ] Write failing tests for potential formula conflict detection and whitespace normalization.
+[x] Write failing tests for potential formula conflict detection and whitespace normalization.
 
-[ ] Implement the documented heuristic and its limitations.
+[x] Implement the documented heuristic and its limitations.
 
-[ ] Write failing tests for the study-sheet Builder.
+[x] Write failing tests for the study-sheet Builder.
 
-[ ] Implement StudySheet and StudySheetBuilder.
+[x] Implement StudySheet and StudySheetBuilder.
 
-[ ] Save a Mermaid UML class diagram under docs/uml/class_diagram.mmd.
+[x] Save a Mermaid UML class diagram under docs/uml/class_diagram.mmd.
 
-[ ] Explain each pattern and one rejected alternative in docs/ARCHITECTURE.md.
+[x] Explain each pattern and one rejected alternative in docs/ARCHITECTURE.md.
 
-[ ] Push feature/p2-domain-patterns and integrate into develop (via GitHub PR if gh is authenticated, or --no-ff merge + push).
+[x] Push feature/p2-domain-patterns and integrate into develop (via GitHub PR if gh is authenticated, or --no-ff merge + push).
 
 Acceptance gate: All domain tests pass; the three patterns are used in the real workflow; no database or FastAPI import is required by the domain modules; TDD commits are pushed to origin.
 

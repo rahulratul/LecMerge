@@ -9,7 +9,7 @@ Remote: https://github.com/rahulratul/LecMerge
 |---|---|---|---|
 | 0 | Workspace inspection, GitHub remote setup, scope lock | `main` (bootstrap) → `develop` | complete (1 item pending student: D-005) |
 | 1 | Minimal runnable project scaffold | `feature/p1-project-scaffold` | complete |
-| 2 | Domain logic and three design patterns (TDD) | `feature/p2-domain-patterns` | not started |
+| 2 | Domain logic and three design patterns (TDD) | `feature/p2-domain-patterns` | complete |
 | 3 | Database, repository, application service | `feature/p3-db-and-services` | not started |
 | 4 | GUI: course, lecture, block, fragment workflow | `feature/p4-gui-workflow` | not started |
 | 5 | Analysis, merge workspace, Markdown export | `feature/p5-analysis-and-merge` | not started |
@@ -116,3 +116,54 @@ Swagger/OpenAPI novelty UNCONFIRMED (D-005), stack lock (D-006).
 ### Limitations
 
 - Dashboard has no create form yet (Phase 4). The Starlette `httpx` deprecation warning is harmless for now.
+
+---
+
+## Phase 2 — Domain logic and three design patterns (TDD)
+
+- **Branch:** `feature/p2-domain-patterns` → merged `--no-ff` into `develop`.
+- **Commits (Red → Green → Refactor):**
+  - `23fe8aa test(domain): add coverage and gap detection cases`
+  - `dd004ae feat(domain): implement composite coverage tree`
+  - `afeee67 test(merge): add strategy selection, tie-break, and empty-input cases`
+  - `1b06783 feat(merge): add most-detailed and latest-submitted strategies`
+  - `5ded625 test(domain): add potential formula conflict detection cases`
+  - `3447ed6 feat(domain): implement limited formula conflict heuristic`
+  - `2900a7e test(export): add study-sheet builder cases`
+  - `64d604d feat(export): implement study-sheet builder`
+  - `2e05c0b docs(domain): add UML class diagram, architecture notes, and domain isolation test`
+  - `refactor(domain): make composite base class public to match UML`
+  - merge `c52cb59 merge: feature/p2-domain-patterns into develop`
+- **Push:** `* [new branch] feature/p2-domain-patterns`, `19b8a9c..c52cb59 develop -> develop`.
+
+### Files changed
+
+`app/domain/composite.py`, `app/domain/strategies.py`, `app/domain/conflict_detector.py`,
+`app/domain/study_sheet.py`, `tests/unit/test_composite.py`, `tests/unit/test_strategies.py`,
+`tests/unit/test_conflict_detector.py`, `tests/unit/test_study_sheet.py`,
+`tests/unit/test_domain_isolation.py`, `docs/uml/class_diagram.mmd`, `docs/ARCHITECTURE.md`.
+
+### Implementation summary
+
+- **Composite (`app/domain/composite.py`)**: `CoverageNode`, `AnchorBlockNode`, `CompositeNode`,
+  `LectureNode`, `CourseNode`. Uniform `total_blocks()`, `covered_blocks()`, `coverage_percent()`,
+  and `find_gaps()`.
+- **Strategy (`app/domain/strategies.py`)**: `MergeStrategy`, `MostDetailedStrategy`,
+  `LatestSubmittedStrategy`, `FragmentLike` protocol, deterministic lowest-ID tie-breaking,
+  `EmptyFragmentListError`, `UnknownStrategyError`, and `STRATEGIES` registry.
+- **Conflict heuristic (`app/domain/conflict_detector.py`)**: line-by-line `=` candidate
+  extraction, whitespace normalization, cautious warning wording (`CONFLICT_WARNING`).
+- **Builder (`app/domain/study_sheet.py`)**: `StudySheet` and fluent `StudySheetBuilder`
+  producing predictable Markdown with coverage, warnings, and ordered block sections.
+- **Architecture guard**: AST-based `test_domain_isolation.py` verifies `app/domain/` does not
+  import FastAPI, Starlette, SQLAlchemy, or Jinja2.
+
+### Commands run and actual results
+
+- Red phase runs for each module failed with `ModuleNotFoundError` before implementation.
+- Final `pytest -q` → `39 passed, 1 warning in 0.29s`.
+- `git push -u origin feature/p2-domain-patterns develop` → succeeded.
+
+### Limitations
+
+- Domain modules are not yet wired into persistence/services (Phase 3).
