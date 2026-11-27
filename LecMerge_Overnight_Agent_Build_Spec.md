@@ -1227,27 +1227,27 @@ Acceptance gate: Persistence tests pass; service tests pass with the repository 
 
 Phase 4 — GUI: course, lecture, block, and fragment workflow
 
-[ ] Branch from develop as feature/p4-gui-workflow.
+[x] Branch from develop as feature/p4-gui-workflow.
 
-[ ] Implement the dashboard and course creation/listing.
+[x] Implement the dashboard and course creation/listing.
 
-[ ] Implement course detail and lecture creation with one block topic per line.
+[x] Implement course detail and lecture creation with one block topic per line.
 
-[ ] Implement the lecture workspace with ordered blocks and coverage display.
+[x] Implement the lecture workspace with ordered blocks and coverage display.
 
-[ ] Implement anchor block detail and text fragment submission.
+[x] Implement anchor block detail and text fragment submission.
 
-[ ] Display all saved fragments with author names and timestamps.
+[x] Display all saved fragments with author names and timestamps.
 
-[ ] Add validation messages and clear empty states.
+[x] Add validation messages and clear empty states.
 
-[ ] Add stable Selenium IDs from Section 5.2.
+[x] Add stable Selenium IDs from Section 5.2.
 
-[ ] Add simple responsive styling using local CSS following Section 5.1 UI style rules.
+[x] Add simple responsive styling using local CSS following Section 5.1 UI style rules.
 
-[ ] Verify the full create-course → create-lecture → create-blocks → submit-fragment flow manually or with an initial GUI test.
+[x] Verify the full create-course → create-lecture → create-blocks → submit-fragment flow manually or with an initial GUI test.
 
-[ ] Push feature/p4-gui-workflow and integrate into develop.
+[x] Push feature/p4-gui-workflow and integrate into develop.
 
 Acceptance gate: A user can complete the core data-entry flow through the browser; data persists after app restart; fragments do not overwrite each other.
 
