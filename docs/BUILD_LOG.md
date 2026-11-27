@@ -11,7 +11,7 @@ Remote: https://github.com/rahulratul/LecMerge
 | 1 | Minimal runnable project scaffold | `feature/p1-project-scaffold` | complete |
 | 2 | Domain logic and three design patterns (TDD) | `feature/p2-domain-patterns` | complete |
 | 3 | Database, repository, application service | `feature/p3-db-and-services` | complete |
-| 4 | GUI: course, lecture, block, fragment workflow | `feature/p4-gui-workflow` | not started |
+| 4 | GUI: course, lecture, block, fragment workflow | `feature/p4-gui-workflow` | complete |
 | 5 | Analysis, merge workspace, Markdown export | `feature/p5-analysis-and-merge` | not started |
 | 6 | REST API and OpenAPI documentation | `feature/p6-rest-api-openapi` | not started |
 | 7 | Test hardening, Selenium, GitHub CI, Git evidence | `feature/p7-tests-selenium-ci` | not started |
@@ -204,3 +204,41 @@ Swagger/OpenAPI novelty UNCONFIRMED (D-005), stack lock (D-006).
 ### Limitations
 
 - Web and REST routers are not yet wired to `LecMergeService` (Phases 4–6).
+
+---
+
+## Phase 4 — GUI: course, lecture, block, and fragment workflow
+
+- **Branch:** `feature/p4-gui-workflow` → merged `--no-ff` into `develop`.
+- **Commits:** `cb94310 feat(ui): add dashboard, course, lecture workspace, and fragment submission views`;
+  merge `7857d5a merge: feature/p4-gui-workflow into develop`.
+- **Push:** `feature/p4-gui-workflow` and `develop` pushed to `origin`.
+
+### Files changed
+
+`requirements.txt` (added `python-multipart==0.0.34`), `app/routers/web.py`,
+`app/static/style.css`, `app/templates/dashboard.html`, `app/templates/course_detail.html`,
+`app/templates/lecture_detail.html`, `app/templates/block_detail.html`, `app/templates/404.html`,
+`tests/integration/test_gui_workflow.py`.
+
+### Implementation summary
+
+- Implemented server-rendered Jinja2 views using `LecMergeService` and POST/Redirect/GET:
+  - Dashboard (`/`) with course list, empty state, and creation form.
+  - Course detail (`/courses/{course_id}`) with lecture list and multiline topic block creation.
+  - Lecture workspace (`/lectures/{lecture_id}`) with coverage metrics, blind-spot count,
+    ordered anchor blocks, and status badges.
+  - Anchor block detail (`/blocks/{block_id}`) with stable Selenium IDs (`#fragment-author`,
+    `#fragment-content`, `#fragment-submit-btn`), fragment list with author & UTC timestamp,
+    and potential formula conflict warning banner.
+  - Clean 404 error template for invalid IDs and validation error messages that preserve form inputs.
+- Styled with local CSS matching Section 5.1 palette (`#0B0D10`, `#13161C`, `#242933`, `#F3F4F6`,
+  `#94A3B8`, `#F59E0B`, `#22C55E`/`#EF4444` strictly for merged/conflict, no gradients/emojis).
+
+### Commands run and actual results
+
+- `pytest -q` → `51 passed, 1 warning in 0.44s`.
+
+### Limitations
+
+- Merge action and study-sheet page/download are wired in Phase 5.

@@ -115,3 +115,75 @@ def test_gui_course_lecture_block_fragment_flow(tmp_path: Path) -> None:
     finally:
         app.dependency_overrides.clear()
         engine.dispose()
+
+
+def test_gui_analysis_merge_and_study_sheet_download(tmp_path: Path) -> None:
+    engine, client = _make_client(tmp_path)
+    try:
+        with client:
+            c = client.post("/courses", data={"code": "CSE 3206", "title": "SE"}, follow_redirects=True)
+            course_id = int(re.search(r"/courses/(\d+)", str(c.url)).group(1))
+            lec = client.post(
+                f"/courses/{course_id}/lectures",
+                data={"title": "Lecture 2", "topics": "Composite Pattern\nStrategy Pattern"},
+                follow_redirects=True,
+            )
+            lecture_id = int(re.search(r"/lectures/(\d+)", str(lec.url)).group(1))
+            block_ids = list(dict.fromkeys(int(m) for m in re.findall(r'href="/blocks/(\d+)"', lec.text)))
+            b1, b2 = block_ids[0], block_ids[1]
+
+            # Merging empty block returns 422 with clear error message
+            empty_merge = client.post(f"/blocks/{b2}/merge", data={"strategy": "most_detailed"})
+            assert empty_merge.status_code == 422
+            assert "no fragments" in empty_merge.text
+
+            # Submit two conflicting fragments to block 1
+            client.post(f"/blocks/{b1}/fragments", data={"author_name": "Amina", "content": "F = ma"})
+            client.post(
+                f"/blocks/{b1}/fragments",
+                data={"author_name": "Tariq", "content": "F = m * a^2\nDetailed note for exam"},
+            )
+
+            # Merge block 1 with most_detailed
+            merged = client.post(
+                f"/blocks/{b1}/merge",
+                data={"strategy": "most_detailed"},
+                follow_redirects=True,
+            )
+            assert merged.status_code == 200
+            assert 'id="canonical-content"' in merged.text
+            assert "Detailed note for exam" in merged.text
+            # Original fragments remain visible
+            assert "Amina" in merged.text
+            assert "Tariq" in merged.text
+            assert "Potential formula conflict — review required" in merged.text
+
+            # Lecture workspace shows 50.0% coverage, 1 blind spot, and MERGED + conflict badge
+            ws = client.get(f"/lectures/{lecture_id}")
+            assert ws.status_code == 200
+            assert "50.0%" in ws.text
+            assert "BLIND SPOT" in ws.text
+            assert "MERGED" in ws.text
+            assert "Potential formula conflict — review required" in ws.text
+
+            # Study sheet page & download
+            sheet_page = client.get(f"/lectures/{lecture_id}/study-sheet")
+            assert sheet_page.status_code == 200
+            assert 'id="study-sheet-download-link"' in sheet_page.text
+            assert "Detailed note for exam" in sheet_page.text
+            assert "Potential formula conflict — review required" in sheet_page.text
+            assert "Blind spot" in sheet_page.text
+
+            dl = client.get(f"/lectures/{lecture_id}/study-sheet/download")
+            assert dl.status_code == 200
+            assert "text/markdown" in dl.headers["content-type"]
+            assert ".md" in dl.headers["content-disposition"]
+            assert "# Lecture 2" in dl.text
+            assert "Potential formula conflict — review required" in dl.text
+
+            # 404 for missing lecture study sheet
+            assert client.get("/lectures/99999/study-sheet").status_code == 404
+            assert client.get("/lectures/99999/study-sheet/download").status_code == 404
+    finally:
+        app.dependency_overrides.clear()
+        engine.dispose()

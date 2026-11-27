@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}Study Sheet: {{ sheet.lecture_title }} — LecMerge{% endblock %}
+{% block content %}
+<nav class="breadcrumb">
+  <a href="/">Courses</a>
+  <span>/</span>
+  <a href="/lectures/{{ sheet.lecture_id }}">{{ sheet.lecture_title }}</a>
+  <span>/</span>
+  <span>Study Sheet</span>
+</nav>
+
+<section class="page-head">
+  <div>
+    <h1>Study Sheet — {{ sheet.lecture_title }}</h1>
+    <p class="muted">{{ sheet.course_code }} — {{ sheet.course_title }}</p>
+  </div>
+  <div class="page-actions">
+    <a class="btn btn-secondary" href="/lectures/{{ sheet.lecture_id }}">Back to lecture</a>
+    <a class="btn" id="study-sheet-download-link" href="/lectures/{{ sheet.lecture_id }}/study-sheet/download">Download .md</a>
+  </div>
+</section>
+
+<section class="metrics" id="study-sheet-metrics">
+  <div>
+    <span class="metric-label">Coverage</span>
+    <span class="metric-value">{{ "%.1f"|format(sheet.coverage_percent) }}%</span>
+  </div>
+  <div>
+    <span class="metric-label">Covered blocks</span>
+    <span class="metric-value">{{ sheet.covered_blocks }} / {{ sheet.total_blocks }}</span>
+  </div>
+  <div>
+    <span class="metric-label">Warnings</span>
+    <span class="metric-value">{{ sheet.warnings | length }}</span>
+  </div>
+</section>
+
+{% if sheet.warnings %}
+<div class="alert alert-conflict" id="study-sheet-warnings">
+  <strong>Unresolved warnings included in export:</strong>
+  <ul class="conflict-list">
+    {% for warning in sheet.warnings %}
+    <li>{{ warning }}</li>
+    {% endfor %}
+  </ul>
+</div>
+{% endif %}
+
+<section class="panel">
+  <h2>Generated Markdown ({{ sheet.filename }})</h2>
+  <div class="surface">
+    <pre class="markdown-preview" id="study-sheet-markdown">{{ sheet.markdown }}</pre>
+  </div>
+</section>
+{% endblock %}
