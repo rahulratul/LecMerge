@@ -58,5 +58,5 @@ between requirement sources. Authority order: official CSE 3206 manual →
 
 - For the overnight MVP, `Base.metadata.create_all()` in `app/database.py` initializes
   the SQLite schema on startup.
-- In a production deployment, a schema migration tool (such as Alembic) would be used so
-  schema changes can be applied incrementally without recreating the database.
+- In a production deployment, Alembic migrations with versioned upgrade/downgrade scripts
+  should replace create_all() so schema changes apply cleanly without recreating data.
