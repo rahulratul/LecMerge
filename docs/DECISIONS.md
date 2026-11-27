@@ -62,3 +62,12 @@ between requirement sources. Authority order: official CSE 3206 manual →
   should replace `create_all()` so schema changes apply cleanly without recreating data.
 - Before any production schema evolution, automated SQLite backups and `PRAGMA foreign_keys`
   verification should accompany versioned migrations to prevent data loss.
+
+## D-008 Scope cuts and conflict heuristic limitations (Phase 8 summary)
+
+- **Excluded from MVP:** authentication/roles, OCR/image upload, AI/LLM semantic diffing,
+  real-time WebSockets, voting/reputation, PDF/DOCX export, Docker/Redis/Celery, and
+  frontend build pipelines. These are documented as future work rather than partial code.
+- **Conflict heuristic trade-off:** `app/domain/conflict_detector.py` uses a deterministic
+  whitespace-normalized line check on `=` expressions. It intentionally avoids claiming
+  mathematical correctness and always labels findings `Potential formula conflict — review required`.

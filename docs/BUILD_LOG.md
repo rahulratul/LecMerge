@@ -14,8 +14,8 @@ Remote: https://github.com/rahulratul/LecMerge
 | 4 | GUI: course, lecture, block, fragment workflow | `feature/p4-gui-workflow` | complete |
 | 5 | Analysis, merge workspace, Markdown export | `feature/p5-analysis-and-merge` | complete |
 | 6 | REST API and OpenAPI documentation | `feature/p6-rest-api-openapi` | complete |
-| 7 | Test hardening, Selenium, GitHub CI, Git evidence | `feature/p7-tests-selenium-ci` | not started |
-| 8 | Final documentation, release merge, submission readiness | `develop` → `main` | not started |
+| 7 | Test hardening, Selenium, GitHub CI, Git evidence | `feature/p7-tests-selenium-ci` | complete (CI run check pending student: private repo / no `gh`) |
+| 8 | Final documentation, release merge, submission readiness | `develop` → `main` | complete |
 
 ---
 
@@ -312,3 +312,67 @@ Swagger/OpenAPI novelty UNCONFIRMED (D-005), stack lock (D-006).
 ### Limitations
 
 - Reminder (D-005): Swagger/OpenAPI novelty as a self-directed tool still requires student confirmation.
+
+---
+
+## Phase 7 — Test hardening, Selenium, GitHub CI, and Git evidence
+
+- **Branches:**
+  - `feature/p7-tests-selenium-ci` → merged `--no-ff` into `develop` (`cfbc634`).
+  - `feature/conflict-doc-a` (`05c41e1`) and `feature/conflict-doc-b` (`3a4263e`) → real
+    merge conflict in `docs/DECISIONS.md`, resolved in `48dc4c1`.
+- **Push:** `feature/p7-tests-selenium-ci`, `feature/conflict-doc-a`, `feature/conflict-doc-b`,
+  and `develop` pushed to `origin`.
+
+### Files changed
+
+`requirements.txt` (added `pytest-cov==7.1.0`, `selenium==4.54.0`), `tests/e2e/test_lecmerge_ui.py`,
+`.github/workflows/ci.yml`, `docs/TESTING.md`, `docs/DECISIONS.md`,
+`docs/evidence/merge_conflict_log.txt`, `docs/evidence/screenshots/*.png` (7 real GUI/Swagger screenshots).
+
+### Commands run and actual results
+
+- `pytest tests/unit tests/integration --cov=app --cov-report=term-missing --cov-report=html`
+  → `54 passed, 1 warning in 1.17s`, **98% total coverage** (100% across `app/domain/*`).
+- `LECMERGE_SCREENSHOT_DIR=docs/evidence/screenshots pytest tests/e2e -q`
+  → `1 passed in 7.47s` (headless Chrome via Selenium Manager; cleaned up browser, uvicorn, temp DB).
+- Real merge conflict: `git merge --no-ff feature/conflict-doc-b` produced `CONFLICT (content): Merge conflict in docs/DECISIONS.md`;
+  captured verbatim `git status` + `git diff` in `docs/evidence/merge_conflict_log.txt`, resolved both points,
+  re-ran `pytest tests/unit tests/integration -q` (`54 passed`), committed `48dc4c1`.
+- GitHub Actions inspection: `gh` CLI is not installed and the repository is private, so
+  `curl https://api.github.com/repos/rahulratul/LecMerge/actions/runs` returned no public runs.
+  The workflow file `.github/workflows/ci.yml` is pushed to `develop` (and `main` in Phase 8);
+  student must open https://github.com/rahulratul/LecMerge/actions to inspect/screenshot the live run.
+
+### Limitations / student actions
+
+- Inspect live CI run at https://github.com/rahulratul/LecMerge/actions (unchecked in spec until verified).
+- Execute manual PR creation/merge/close steps documented in `docs/evidence/README.md` (since `gh` is not installed).
+
+---
+
+## Phase 8 — Final documentation, release merge to main, and submission readiness
+
+- **Branch:** `develop` → merged `--no-ff` into `main` and pushed to `origin`.
+
+### Files changed
+
+`README.md`, `docs/REQUIREMENTS.md`, `docs/DECISIONS.md` (D-008), `docs/evidence/README.md`,
+`docs/REPORT_OUTLINE.md`, `docs/REFLECTION_DRAFT.md` (566 words), `docs/BUILD_LOG.md`,
+`LecMerge_Overnight_Agent_Build_Spec.md` (Phase 8 boxes ticked).
+
+### Final verification commands and actual results
+
+- `wc -w docs/REFLECTION_DRAFT.md` → `566` words (within 500–700 word range; marked for student review).
+- `pytest tests/unit tests/integration --cov=app --cov-report=term-missing -q`
+  → `54 passed, 1 warning in 1.05s`, **98% total coverage** (100% in `app/domain/*`).
+- `pytest tests/e2e -q` → `1 passed in 4.79s`.
+
+### Remaining manual student actions (explicitly not fabricated)
+
+1. Confirm Swagger/OpenAPI novelty with the instructor (Phase 0 / `docs/DECISIONS.md` D-005).
+2. Inspect and screenshot the live GitHub Actions CI run at https://github.com/rahulratul/LecMerge/actions
+   (Phase 7 checkbox left unchecked because `gh` is not installed and the repo is private).
+3. Create/merge/close the required GitHub PRs using the ready-to-paste instructions in
+   `docs/evidence/README.md` (since `gh` CLI is not installed).
+4. Review and personalize `docs/REFLECTION_DRAFT.md` before submission.
