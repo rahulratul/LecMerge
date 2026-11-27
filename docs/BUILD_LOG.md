@@ -376,3 +376,14 @@ Swagger/OpenAPI novelty UNCONFIRMED (D-005), stack lock (D-006).
 3. Create/merge/close the required GitHub PRs using the ready-to-paste instructions in
    `docs/evidence/README.md` (since `gh` CLI is not installed).
 4. Review and personalize `docs/REFLECTION_DRAFT.md` before submission.
+
+---
+
+## Post-release CI Fix — `fix/ci-pytest-pythonpath`
+
+- **Symptom:** GitHub Actions CI runs #1–#7 failed when executing `pytest tests/unit tests/integration`.
+- **Root cause (reproduced locally):** Running `pytest` directly (rather than `python -m pytest`)
+  failed with `ModuleNotFoundError: No module named 'app'` because `pytest.ini` did not set `pythonpath = .`.
+- **Fix:** Added `pythonpath = .` to `pytest.ini` and updated `.github/workflows/ci.yml` to run
+  `python -m pytest`.
+- **Verification:** `.venv/bin/pytest tests/unit tests/integration -q` → `54 passed`.
